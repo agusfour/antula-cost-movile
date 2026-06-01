@@ -74,6 +74,12 @@
 .a-input:focus{border-color:var(--orange);}
 .w90{width:90px;}.w70{width:70px;}.w60{width:60px;}
 .stamp-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;margin-bottom:9px;}
+.pa-mat-row{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.pa-mat-row:last-child{margin-bottom:0;}
+.pa-mat-row .a-select{flex:1;min-width:0;max-width:160px;font-size:13px;}
+.pa-mat-row .pa-mat-qty{width:110px;flex-shrink:0;text-align:center;}
+.pa-mat-row .pa-mat-unit{font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0;min-width:28px;}
+.pa-mat-row .remove-btn{flex-shrink:0;}
 .stamp-row:last-child{margin-bottom:0;}
 .a-select{padding:8px 10px;font-size:14px;border:1px solid var(--line);border-radius:9px;background:var(--cream2);color:var(--ink);width:100%;outline:none;transition:border-color .2s;font-family:var(--font);cursor:pointer;}
 .a-select:focus{border-color:var(--orange);}
@@ -458,10 +464,9 @@
           <div class="tile-name">Papelería Comercial</div>
           <div class="tile-desc">Tarjetas, flyers, folletos</div>
         </div>
-        <div class="tile tile-3 disabled" title="Próximamente">
-          <span class="tile-badge">Pronto</span>
+        <div class="tile tile-3" onclick="showView('artistica')">
           <div class="tile-ico"><i class="ti ti-palette"></i></div>
-          <div class="tile-name">Papelería de Diseño</div>
+          <div class="tile-name">Papelería Artística</div>
           <div class="tile-desc">Invitaciones, kits, packaging</div>
         </div>
       </div>
@@ -622,6 +627,86 @@
 
     </div><!-- /view-papeleria -->
 
+    <!-- ===================== PAPELERÍA ARTÍSTICA ===================== -->
+    <div class="view" id="view-artistica">
+
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="toggle-btn" onclick="paToggleParams()" style="flex:1;">
+          <i class="ti ti-settings" id="pa-settings-icon"></i>
+          <span id="pa-toggle-label">Editar parámetros de costos</span>
+          <i class="ti ti-chevron-down" id="pa-toggle-icon"></i>
+          <span class="save-badge" id="pa-save-badge">Aplicado</span>
+        </button>
+        <button class="clear-btn" onclick="paLimpiar()"><i class="ti ti-trash"></i> Limpiar</button>
+      </div>
+      <div class="params-panel" id="pa-params-panel">
+        <div class="card" style="margin-top:.75rem;">
+          <p class="sec-title"><i class="ti ti-adjustments"></i> Mano de obra y margen</p>
+          <div class="param-cards-grid">
+            <div class="param-mini-card">
+              <div class="param-mini-lbl">Hora diseño</div>
+              <div class="param-mini-input-wrap"><span class="param-unit">$</span><input class="param-big-input" type="number" id="pa-hora-diseno" value="15000" min="0" step="500" oninput="paParamChange()"></div>
+            </div>
+            <div class="param-mini-card">
+              <div class="param-mini-lbl">Hora armado</div>
+              <div class="param-mini-input-wrap"><span class="param-unit">$</span><input class="param-big-input" type="number" id="pa-hora-armado" value="10000" min="0" step="500" oninput="paParamChange()"></div>
+            </div>
+            <div class="param-mini-card">
+              <div class="param-mini-lbl">Margen mat.</div>
+              <div class="param-mini-input-wrap"><input class="param-big-input" type="number" id="pa-margen" value="50" min="0" max="300" step="1" oninput="paParamChange()"><span class="param-unit">%</span></div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <p class="sec-title"><i class="ti ti-stack-2"></i> Precios de materiales</p>
+          <div class="field-row"><span class="field-label">Cartulina</span>
+            <div style="display:flex;align-items:center;gap:6px;"><input type="number" id="pa-cartulina-qty" class="a-input w70" value="10" min="1" step="1" oninput="paParamChange()"><span class="field-unit">unid</span><span class="field-unit" style="color:var(--line);">|</span><span class="field-unit">$</span><input type="number" id="pa-precio-cartulina" class="a-input w90" value="5000" min="0" step="100" oninput="paParamChange()"></div></div>
+          <div class="field-row"><span class="field-label">Papel Adornie</span>
+            <div style="display:flex;align-items:center;gap:6px;"><input type="number" id="pa-adornie-qty" class="a-input w70" value="20" min="1" step="1" oninput="paParamChange()"><span class="field-unit">hojas</span><span class="field-unit" style="color:var(--line);">|</span><span class="field-unit">$</span><input type="number" id="pa-precio-adornie" class="a-input w90" value="4000" min="0" step="100" oninput="paParamChange()"></div></div>
+          <div class="field-row"><span class="field-label">Papel Matelina</span>
+            <div style="display:flex;align-items:center;gap:6px;"><input type="number" id="pa-matelina-qty" class="a-input w70" value="20" min="1" step="1" oninput="paParamChange()"><span class="field-unit">hojas</span><span class="field-unit" style="color:var(--line);">|</span><span class="field-unit">$</span><input type="number" id="pa-precio-matelina" class="a-input w90" value="6000" min="0" step="100" oninput="paParamChange()"></div></div>
+          <div class="field-row"><span class="field-label">Palitos</span>
+            <div style="display:flex;align-items:center;gap:6px;"><input type="number" id="pa-palitos-qty" class="a-input w70" value="100" min="1" step="1" oninput="paParamChange()"><span class="field-unit">u</span><span class="field-unit" style="color:var(--line);">|</span><span class="field-unit">$</span><input type="number" id="pa-palitos-precio" class="a-input w90" value="1500" min="0" step="50" oninput="paParamChange()"></div></div>
+          <div class="field-row"><span class="field-label">Cinta Bifaz</span>
+            <div style="display:flex;align-items:center;gap:6px;"><input type="number" id="pa-bifaz-cm" class="a-input w70" value="500" min="1" step="10" oninput="paParamChange()"><span class="field-unit">cm</span><span class="field-unit" style="color:var(--line);">|</span><span class="field-unit">$</span><input type="number" id="pa-bifaz-precio" class="a-input w90" value="2000" min="0" step="50" oninput="paParamChange()"></div></div>
+          <div class="field-row"><span class="field-label">Hilos (precio fijo por pedido)</span>
+            <div style="display:flex;align-items:center;gap:5px;"><span class="field-unit">$</span><input type="number" id="pa-hilos-precio" class="a-input w90" value="500" min="0" step="50" oninput="paParamChange()"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <input class="desc-input" type="text" id="pa-desc" placeholder="Descripción del pedido (ej. Toppers cumpleaños)">
+
+    <p class="sec-title" style="margin:.25rem 0 2px;"><i class="ti ti-files"></i> Productos del pedido</p>
+    <div id="pa-items"></div>
+    <button class="add-btn" onclick="paAddItem()" style="margin-top:0;"><i class="ti ti-plus"></i> Agregar producto</button>
+
+    <div class="results">
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-lbl"><i class="ti ti-palette"></i> Materiales</div>
+          <div class="price-eq" id="pa-eq-mat"> </div>
+          <div class="price-val" id="pa-r-mat">$0</div>
+        </div>
+        <div class="price-card gold">
+          <div class="price-lbl"><i class="ti ti-receipt"></i> Total pedido</div>
+          <div class="price-eq" id="pa-eq-total"> </div>
+          <div class="price-val" id="pa-r-total">$0</div>
+        </div>
+      </div>
+      <div class="profit-row">
+        <span class="profit-lbl"><i class="ti ti-trending-up"></i> Ganancia estimada</span>
+        <div class="profit-vals"><div class="profit-val"><span>total</span><span id="pa-p-total">$0</span></div></div>
+      </div>
+      <div class="breakdown" id="pa-breakdown"></div>
+    </div>
+
+    <button class="gen-pres-btn" onclick="paGenerarPresupuesto()">
+      <i class="ti ti-file-invoice"></i> Generar Presupuesto
+    </button>
+
+    </div><!-- /view-artistica -->
+
   </div>
 </div>
 
@@ -631,6 +716,7 @@ const VIEWS={
   home:{sub:"Calculadora de costos",name:"Elegí una sección para comenzar",back:false},
   estampados:{sub:"Estampados",name:"Indumentaria + estampado DTF",back:true},
   papeleria:{sub:"Papelería Comercial",name:"Corte y aprovechamiento de hoja",back:true},
+  artistica:{sub:"Papelería Artística",name:"Productos de diseño artesanal",back:true},
 };
 function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -641,6 +727,7 @@ function showView(name){
   document.getElementById('back-btn').classList.toggle('show',cfg.back);
   if(name==='estampados' && !window._estInit){estInit();window._estInit=true;}
   if(name==='papeleria' && !window._pcInit){pcInit();window._pcInit=true;}
+  if(name==='artistica' && !window._paInit){paInit();window._paInit=true;}
 }
 function goHome(){showView('home');}
 
@@ -679,7 +766,7 @@ function estAddItem(){
   div.className='est-item';
   div.innerHTML=`
     <div class="pc-item-head">
-      <span class="pc-item-title">Ítem</span>
+      <span class="pc-item-title">Producto</span>
       <button class="remove-btn est-item-del" onclick="estRemoveItem(this)" aria-label="Quitar ítem"><i class="ti ti-trash"></i></button>
     </div>
     <input type="text" class="est-titulo" placeholder="Título del ítem (ej. Buzos cuello base)" oninput="calcular()">
@@ -710,7 +797,7 @@ function estRemoveItem(btn){
 }
 function estRenumber(){
   const items=document.querySelectorAll('#est-items .est-item');
-  items.forEach(it=>{ it.querySelector('.est-item-del').style.visibility=items.length>1?'visible':'hidden'; });
+  items.forEach(it=>{ it.querySelector('.est-item-del').style.visibility=items.length>1?'visible':'hidden';}); 
 }
 function estAddStamp(btn){
   const cont=btn.closest('.est-item').querySelector('.est-stamps');
@@ -731,7 +818,7 @@ function calcular(){
   let totalPedido=0, totalBase=0, totalGanancia=0, totalUnidades=0, bk='';
   window._presItems=[];
   items.forEach((it,idx)=>{
-    const nombre=((it.querySelector('.est-titulo').value)||'').trim()||('Ítem '+(idx+1));
+    const nombre=((it.querySelector('.est-titulo').value)||'').trim()||('Producto '+(idx+1));
     it.querySelector('.pc-item-title').textContent=nombre;
     const costoRopa=parseFloat(it.querySelector('.est-ropa').value)||0;
     let estUnit=0, nStamps=0;
@@ -814,7 +901,7 @@ function pcAddItem(){
   div.className='pc-item';
   div.innerHTML=`
     <div class="pc-item-head">
-      <span class="pc-item-title">Ítem</span>
+      <span class="pc-item-title">Producto</span>
       <button class="remove-btn pc-item-del" onclick="pcRemoveItem(this)" aria-label="Quitar ítem"><i class="ti ti-trash"></i></button>
     </div>
     <input type="text" class="est-titulo pc-titulo" placeholder="Nombre del ítem (ej. Stickers circulares)" oninput="pcCalcular()">
@@ -837,7 +924,9 @@ function pcAddItem(){
       <div class="chip"><b class="pc-hojas">0</b><small>Hojas</small></div>
       <div class="chip"><b class="pc-unit-price">$0</b><small>Total ítem</small></div>
     </div>
-    <div class="layout-wrap pc-layout"></div>`;
+    <div class="layout-wrap pc-layout"></div>
+    <button class="add-btn" onclick="pcAddOtros(this)" style="margin-top:8px;"><i class="ti ti-plus"></i> Agregar costo adicional</button>
+    <div class="pc-otros-list"></div>`;
   c.appendChild(div);
   pcRenumber();
   pcCalcular();
@@ -851,7 +940,7 @@ function pcRenumber(){
   const items=document.querySelectorAll('#pc-items .pc-item');
   items.forEach((it,i)=>{
     const titulo=(it.querySelector('.pc-titulo').value||'').trim();
-    it.querySelector('.pc-item-title').textContent=titulo||('Ítem '+(i+1));
+    it.querySelector('.pc-item-title').textContent=titulo||('Producto '+(i+1));
     it.querySelector('.pc-item-del').style.visibility=items.length>1?'visible':'hidden';
   });
 }
@@ -941,7 +1030,7 @@ function pcCalcular(){
   let totalPedido=0, totalBase=0, totalGanancia=0, totalPiezas=0, bk='';
   window._pcPresItems=[];
   items.forEach((it,idx)=>{
-    const nombre=((it.querySelector('.pc-titulo').value)||'').trim()||'Ítem '+(idx+1);
+    const nombre=((it.querySelector('.pc-titulo').value)||'').trim()||('Producto '+(idx+1));
     it.querySelector('.pc-item-title').textContent=nombre;
     const m=PC_MATERIALS[parseInt(it.querySelector('.pc-mat').value)||0]||PC_MATERIALS[0];
     const W=m.w,H=m.h;
@@ -1085,6 +1174,218 @@ function pcGenerarPresupuesto(){
   document.getElementById('pres-overlay').classList.remove('hidden');
 }
 
+
+/* ============ PAPELERÍA ARTÍSTICA ============ */
+const PA_MATS=[
+  {id:'cartulina',name:'Cartulina',     unit:'unid', min:0.25,step:0.25},
+  {id:'adornie',  name:'Papel Adornie', unit:'hojas',min:0.5, step:0.5},
+  {id:'matelina', name:'Papel Matelina',unit:'hojas',min:0.5, step:0.5},
+  {id:'palitos',  name:'Palitos',       unit:'u',    min:1,   step:1},
+  {id:'bifaz',    name:'Cinta Bifaz',   unit:'cm',   min:1,   step:1},
+  {id:'hilos',    name:'Hilos',         unit:'pedido',min:1,  step:1,fixed:true},
+  {id:'otros',    name:'Otros',         unit:'libre'},
+];
+function paById(id){return parseFloat(document.getElementById(id).value)||0;}
+function paMatUnitCost(id){
+  if(id==='cartulina'){var q=paById('pa-cartulina-qty')||1;return paById('pa-precio-cartulina')/q;}
+  if(id==='adornie'){var q=paById('pa-adornie-qty')||1;return paById('pa-precio-adornie')/q;}
+  if(id==='matelina'){var q=paById('pa-matelina-qty')||1;return paById('pa-precio-matelina')/q;}
+  if(id==='palitos'){var q=paById('pa-palitos-qty')||1;return paById('pa-palitos-precio')/q;}
+  if(id==='bifaz'){const c=paById('pa-bifaz-cm')||1;return paById('pa-bifaz-precio')/c;}
+  if(id==='hilos')     return paById('pa-hilos-precio');
+  return 0;
+}
+function paMatOptions(){
+  return PA_MATS.map(function(m){return '<option value="'+m.id+'">'+m.name+'</option>';}).join('');
+}
+function paOnMatChange(sel){
+  var row=sel.closest('.pa-mat-row');
+  var id=sel.value;
+  var mat=PA_MATS.find(function(m){return m.id===id;});
+  var qtyEl=row.querySelector('.pa-mat-qty');
+  var unitEl=row.querySelector('.pa-mat-unit');
+  var otrosEl=row.querySelector('.pa-otros-wrap');
+  if(id==='otros'){
+    qtyEl.style.display='none'; unitEl.style.display='none';
+    if(!otrosEl){
+      otrosEl=document.createElement('div');
+      otrosEl.className='pa-otros-wrap';
+      otrosEl.style.cssText='display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:6px;';
+      otrosEl.innerHTML='<input type="text" class="est-titulo pa-otros-nombre" placeholder="Nombre material" style="flex:1;min-width:120px;" oninput="paCalcular()">'
+        +'<span class="field-unit">$</span><input type="number" class="a-input w90 pa-otros-costo" value="0" min="0" step="100" oninput="paCalcular()">';
+      row.appendChild(otrosEl);
+    } else { otrosEl.style.display='flex'; }
+  } else {
+    qtyEl.style.display=''; unitEl.style.display='';
+    if(otrosEl) otrosEl.style.display='none';
+    if(mat){
+      qtyEl.min=mat.min; qtyEl.step=mat.step; qtyEl.value=mat.min;
+      unitEl.textContent=mat.unit;
+      if(mat.fixed){qtyEl.style.display='none'; unitEl.textContent='(fijo por pedido)';}
+    }
+  }
+  paCalcular();
+}
+function paAddMatRow(cont){
+  var row=document.createElement('div');
+  row.className='pa-mat-row';
+  row.innerHTML='<select class="a-select pa-mat-sel" onchange="paOnMatChange(this)">'+paMatOptions()+'</select>'
+    +'<input class="a-input pa-mat-qty" type="number" value="1" min="0.25" step="0.25" oninput="paCalcular()" style="text-align:center;">'
+    +'<span class="field-unit pa-mat-unit">unid</span>'
+    +'<button class="remove-btn" onclick="this.closest(\'.pa-mat-row\').remove();paCalcular()"><i class="ti ti-trash"></i></button>';
+  cont.appendChild(row);
+}
+function paAddItem(){
+  var c=document.getElementById('pa-items');
+  var div=document.createElement('div');
+  div.className='est-item pa-item';
+  div.innerHTML=''
+    +'<div class="pc-item-head">'
+    +'<span class="pc-item-title">Producto</span>'
+    +'<button class="remove-btn pa-item-del" onclick="paRemoveItem(this)"><i class="ti ti-trash"></i></button>'
+    +'</div>'
+    +'<input type="text" class="est-titulo pa-titulo" placeholder="Nombre del producto (ej. Topper cumpleanos)" oninput="paCalcular()">'
+    +'<div class="field-row"><span class="field-label">Cantidad de items del pedido</span>'
+    +'<input type="number" class="a-input w70 pa-qty" value="1" min="1" step="1" oninput="paCalcular()"></div>'
+    +'<p class="est-sub-title">Materiales (para el pedido completo)</p>'
+    +'<div class="pa-mats"></div>'
+    +'<button class="add-btn" onclick="paAddMat(this)" style="margin-top:6px;"><i class="ti ti-plus"></i> Agregar material</button>'
+    +'<p class="est-sub-title" style="margin-top:10px;">Mano de obra (por unidad)</p>'
+    +'<div class="field-row"><span class="field-label">Horas de diseno</span>'
+    +'<div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 pa-hs-diseno" value="0" min="0" step="0.5" oninput="paCalcular()"><span class="field-unit">hs</span></div></div>'
+    +'<div class="field-row"><span class="field-label">Horas de armado</span>'
+    +'<div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 pa-hs-armado" value="0.5" min="0" step="0.5" oninput="paCalcular()"><span class="field-unit">hs</span></div></div>'
+    +'<div class="calc-info">'
+    +'<div class="chip"><b class="pa-mat-total">$0</b><small>Mat. pedido</small></div>'
+    +'<div class="chip"><b class="pa-unit-price">$0</b><small>Precio unitario</small></div>'
+    +'</div>';
+  c.appendChild(div);
+  paRenumber();
+  paCalcular();
+}
+function paAddMat(btn){
+  var cont=btn.closest('.pa-item').querySelector('.pa-mats');
+  paAddMatRow(cont);
+  paCalcular();
+}
+function paRemoveItem(btn){
+  if(document.querySelectorAll('#pa-items .pa-item').length<=1) return;
+  btn.closest('.pa-item').remove();
+  paRenumber(); paCalcular();
+}
+function paRenumber(){
+  var items=document.querySelectorAll('#pa-items .pa-item');
+  items.forEach(function(it,i){
+    var t=(it.querySelector('.pa-titulo').value||'').trim();
+    it.querySelector('.pc-item-title').textContent=t||('Producto '+(i+1));
+    it.querySelector('.pa-item-del').style.visibility=items.length>1?'visible':'hidden';
+  });
+}
+function paInit(){document.getElementById('pa-items').innerHTML='';paAddItem();}
+function paParamChange(){paCalcular();paFlashSaved();}
+function paFlashSaved(){var b=document.getElementById('pa-save-badge');b.classList.add('show');clearTimeout(window._past);window._past=setTimeout(function(){b.classList.remove('show');},1500);}
+function paToggleParams(){
+  var p=document.getElementById('pa-params-panel');p.classList.toggle('open');
+  var open=p.classList.contains('open');
+  document.getElementById('pa-toggle-icon').className=open?'ti ti-chevron-up':'ti ti-chevron-down';
+  document.getElementById('pa-settings-icon').className=open?'ti ti-settings-filled':'ti ti-settings';
+  document.getElementById('pa-toggle-label').textContent=open?'Cerrar parametros':'Editar parametros de costos';
+}
+function paLimpiar(){
+  document.getElementById('pa-items').innerHTML='';
+  document.getElementById('pa-desc').value='';
+  window._paInit=false; paInit(); window._paInit=true;
+  document.querySelectorAll('#pa-items input[type=number]').forEach(function(el){el.value=0;});
+  paCalcular();
+}
+function paCalcular(){
+  var margen=(parseFloat(document.getElementById('pa-margen').value)||0)/100;
+  var horaDis=paById('pa-hora-diseno'), horaArm=paById('pa-hora-armado');
+  var items=document.querySelectorAll('#pa-items .pa-item');
+  var totalPedido=0,totalBase=0,totalGanancia=0,totalUnidades=0,bk='';
+  window._paPresItems=[];
+  items.forEach(function(it,idx){
+    var nombre=((it.querySelector('.pa-titulo').value)||'').trim()||('Producto '+(idx+1));
+    it.querySelector('.pc-item-title').textContent=nombre;
+    var qty=Math.max(1,parseInt(it.querySelector('.pa-qty').value)||1);
+    var costoMatTotal=0;
+    it.querySelectorAll('.pa-mat-row').forEach(function(row){
+      var id=row.querySelector('.pa-mat-sel').value;
+      if(id==='otros'){
+        var cOtros=parseFloat((row.querySelector('.pa-otros-costo')||{}).value)||0;
+        costoMatTotal+=cOtros;
+      } else {
+        var mat=PA_MATS.find(function(m){return m.id===id;});
+        var qtyMat=parseFloat(row.querySelector('.pa-mat-qty').value)||0;
+        var unitCost=paMatUnitCost(id);
+        costoMatTotal+=mat&&mat.fixed?unitCost:qtyMat*unitCost;
+      }
+    });
+    var hsDis=parseFloat(it.querySelector('.pa-hs-diseno').value)||0;
+    var hsArm=parseFloat(it.querySelector('.pa-hs-armado').value)||0;
+    var mdoTotal=hsDis*horaDis+hsArm*horaArm;
+    var totalItem=Math.round(costoMatTotal*(1+margen)+mdoTotal);
+    var gananciaItem=costoMatTotal*margen+mdoTotal;
+    totalBase+=costoMatTotal; totalPedido+=totalItem; totalGanancia+=gananciaItem; totalUnidades+=qty;
+    it.querySelector('.pa-mat-total').textContent=fmt(costoMatTotal);
+    it.querySelector('.pa-unit-price').textContent=fmt(totalItem);
+    window._paPresItems.push({nombre:nombre,qty:qty,totalItem:totalItem});
+    bk+='<div class="bk-row"><span>'+nombre+' · '+qty+'u</span><span>'+fmt(totalItem)+'</span></div>';
+  });
+  document.getElementById('pa-r-mat').textContent=fmt(totalBase);
+  document.getElementById('pa-r-total').textContent=fmt(totalPedido);
+  document.getElementById('pa-eq-mat').textContent=items.length+' producto'+(items.length===1?'':'s')+' · '+totalUnidades+' unidades';
+  document.getElementById('pa-eq-total').textContent='materiales + margen + mano de obra';
+  document.getElementById('pa-p-total').textContent=fmt(totalGanancia);
+  bk+='<hr class="bk-sep">';
+  bk+='<div class="bk-row is-profit"><span style="font-weight:600;color:var(--purple);">Ganancia total</span><span>'+fmt(totalGanancia)+'</span></div>';
+  document.getElementById('pa-breakdown').innerHTML=bk;
+}
+function paGenerarPresupuesto(){
+  var items=window._paPresItems||[];
+  var desc=(document.getElementById('pa-desc').value||'').trim();
+  var total=items.reduce(function(s,it){return s+it.totalItem;},0);
+  var fecha=new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'});
+  var logoSrc=document.querySelector('.header img.logo').src;
+  var rows='';
+  items.forEach(function(it){
+    rows+='<tr><td>'+it.nombre.toUpperCase()+'</td><td>'+it.qty+'</td><td>'+fmt(it.totalItem)+'</td></tr>';
+  });
+  var wa='<svg class="pres-wa-icon" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.114.554 4.1 1.522 5.826L.057 23.486a.5.5 0 0 0 .613.613l5.701-1.447A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.368l-.36-.214-3.714.943.981-3.624-.235-.372A9.817 9.817 0 0 1 2.182 12C2.182 6.565 6.565 2.182 12 2.182S21.818 6.565 21.818 12 17.435 21.818 12 21.818z"/></svg>';
+  document.getElementById('pres-capture').innerHTML=''
+    +'<div class="pres-blob pres-blob-tr"></div>'
+    +'<div class="pres-blob pres-blob-bl"></div>'
+    +'<div class="pres-blob pres-blob-br"></div>'
+    +'<div class="pres-inner">'
+    +'<div class="pres-header">'
+    +'<img src="'+logoSrc+'" class="pres-logo" alt="Antula Estudio">'
+    +'<div class="pres-title-block"><p class="pres-title">Presupuesto</p><p class="pres-date">'+fecha+'</p></div>'
+    +'</div>'
+    +(desc?'<p style="font-size:13px;color:#5c5266;margin:0 0 10px;font-weight:500;">'+desc+'</p>':'')
+    +'<hr class="pres-divider">'
+    +'<table class="pres-table"><thead><tr><th>Concepto</th><th>Cantidad</th><th>Total</th></tr></thead><tbody>'+rows+'</tbody></table>'
+    +'<div class="pres-total-row"><span class="pres-total-label">TOTAL:</span><span class="pres-total-val">'+fmt(total)+'</span></div>'
+    +'<div class="pres-footer">'
+    +'<div class="pres-contact-item"><i class="ti ti-mail"></i> antulaestudio@gmail.com</div>'
+    +'<div class="pres-contact-item">'+wa+' 3576477329</div>'
+    +'</div>'
+    +'<p class="pres-note">Los pedidos son reservados con una seña del 50%</p>'
+    +'</div>';
+  document.getElementById('pres-overlay').classList.remove('hidden');
+}
+
+/* ============ PC OTROS ============ */
+function pcAddOtros(btn){
+  var list=btn.closest('.pc-item').querySelector('.pc-otros-list');
+  var row=document.createElement('div');
+  row.className='pa-mat-row';
+  row.style.marginTop='6px';
+  row.innerHTML='<input type="text" class="est-titulo pc-otros-nombre" placeholder="Ej: papel especial" style="flex:1;" oninput="pcCalcular()">'
+    +'<span class="field-unit">$</span><input type="number" class="a-input w90 pc-otros-costo" value="0" min="0" step="100" oninput="pcCalcular()">'
+    +'<button class="remove-btn" onclick="this.closest(\'.pa-mat-row\').remove();pcCalcular()"><i class="ti ti-x"></i></button>';
+  list.appendChild(row);
+  pcCalcular();
+}
 </script>
 
 <!-- MODAL PRESUPUESTO -->
