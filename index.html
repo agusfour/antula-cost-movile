@@ -33,13 +33,15 @@
 .home-intro{text-align:center;margin:.5rem 0 .25rem;}
 .home-intro h3{font-family:var(--display);font-size:20px;font-weight:700;color:var(--purple);margin:0 0 4px;}
 .home-intro p{font-size:13px;color:var(--muted);margin:0;}
-.tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:.5rem;}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:.5rem;}
 .tile{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:1.5rem 1rem 1.25rem;display:flex;flex-direction:column;align-items:center;gap:.7rem;cursor:pointer;transition:transform .15s,box-shadow .2s,border-color .2s;text-align:center;box-shadow:0 2px 10px rgba(59,28,107,.04);}
 .tile:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(59,28,107,.12);border-color:var(--orange-l);}
 .tile-ico{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#fff;}
 .tile-1 .tile-ico{background:linear-gradient(135deg,var(--orange),var(--orange-d));box-shadow:0 6px 16px rgba(240,128,45,.35);}
 .tile-2 .tile-ico{background:linear-gradient(135deg,var(--magenta),#8d166a);box-shadow:0 6px 16px rgba(194,29,143,.3);}
 .tile-3 .tile-ico{background:linear-gradient(135deg,var(--lilac),var(--purple));box-shadow:0 6px 16px rgba(59,28,107,.3);}
+.tile-4 .tile-ico{background:linear-gradient(135deg,#2a9d8f,#264653);box-shadow:0 6px 16px rgba(42,157,143,.35);}
+.tile-4 .tile-ico{background:linear-gradient(135deg,#2a9d8f,#264653);box-shadow:0 6px 16px rgba(42,157,143,.35);}
 .tile-name{font-family:var(--display);font-size:14px;font-weight:700;color:var(--ink);line-height:1.2;}
 .tile-desc{font-size:11px;color:var(--muted);line-height:1.3;}
 .tile.disabled{cursor:not-allowed;opacity:.55;filter:grayscale(.35);}
@@ -91,14 +93,16 @@
 .mdo-hint i{color:var(--orange);margin-top:1px;}
 
 .results{background:linear-gradient(135deg,#fff 0%,#fdf2e8 100%);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 18px rgba(59,28,107,.07);}
-.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
 .price-card{padding:1.15rem 1.25rem;}
-.price-card:first-child{border-right:1px solid var(--line);}
+.price-card:not(:last-child){border-right:1px solid var(--line);}
 .price-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:5px;display:flex;align-items:center;gap:5px;font-weight:600;}
 .price-eq{font-size:11px;color:var(--muted);margin-bottom:4px;min-height:14px;}
 .price-val{font-size:27px;font-weight:700;color:var(--purple);font-family:var(--display);}
 .price-card.gold{background:linear-gradient(135deg,rgba(240,128,45,.10),rgba(194,29,143,.06));}
 .price-card.gold .price-val{color:var(--orange-d);}
+.price-card.profit{background:linear-gradient(135deg,rgba(194,29,143,.09),rgba(59,28,107,.05));}
+.price-card.profit .price-val{color:var(--magenta);}
 .profit-row{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.25rem;border-top:1px solid var(--line);background:linear-gradient(90deg,rgba(194,29,143,.07),rgba(59,28,107,.05));flex-wrap:wrap;gap:8px;}
 .profit-lbl{font-size:12px;color:var(--purple);font-weight:600;display:flex;align-items:center;gap:5px;}
 .profit-lbl i{color:var(--magenta);}
@@ -319,7 +323,7 @@
 
   /* Results grid — stack */
   .price-grid{grid-template-columns:1fr;}
-  .price-card:first-child{border-right:none;border-bottom:1px solid var(--line);}
+  .price-card:not(:last-child){border-right:none;border-bottom:1px solid var(--line);}
   .price-val{font-size:24px;}
 
   /* Profit row */
@@ -330,7 +334,7 @@
 
   /* Calc chips */
   .calc-info{flex-wrap:wrap;}
-  .calc-info .chip{min-width:calc(50% - 5px);}
+  .calc-info .chip{min-width:calc(33% - 5px);}
   .calc-info .chip b{font-size:17px;}
 
   /* Item cards */
@@ -467,7 +471,12 @@
         <div class="tile tile-3" onclick="showView('artistica')">
           <div class="tile-ico"><i class="ti ti-palette"></i></div>
           <div class="tile-name">Papelería Artística</div>
-          <div class="tile-desc">Invitaciones, kits, packaging</div>
+          <div class="tile-desc">Toppers, adornos</div>
+        </div>
+        <div class="tile tile-4" onclick="showView('sublimados')">
+          <div class="tile-ico"><i class="ti ti-droplet"></i></div>
+          <div class="tile-name">Sublimados</div>
+          <div class="tile-desc">Tazas, vasos y más</div>
         </div>
       </div>
     </div>
@@ -529,16 +538,15 @@
           <div class="price-eq" id="eq-mat"> </div>
           <div class="price-val" id="r-mat">$0</div>
         </div>
+        <div class="price-card profit">
+          <div class="price-lbl"><i class="ti ti-trending-up"></i> Ganancia</div>
+          <div class="price-eq" id="eq-ganancia"> </div>
+          <div class="price-val" id="p-total">$0</div>
+        </div>
         <div class="price-card gold">
           <div class="price-lbl"><i class="ti ti-receipt"></i> Total pedido</div>
           <div class="price-eq" id="eq-total"> </div>
           <div class="price-val" id="r-total">$0</div>
-        </div>
-      </div>
-      <div class="profit-row">
-        <span class="profit-lbl"><i class="ti ti-trending-up"></i> Ganancia estimada</span>
-        <div class="profit-vals">
-          <div class="profit-val"><span>total</span><span id="p-total">$0</span></div>
         </div>
       </div>
       <div class="breakdown" id="est-breakdown"></div>
@@ -606,16 +614,15 @@
           <div class="price-eq" id="pc-eq-mat"> </div>
           <div class="price-val" id="pc-r-mat">$0</div>
         </div>
+        <div class="price-card profit">
+          <div class="price-lbl"><i class="ti ti-trending-up"></i> Ganancia</div>
+          <div class="price-eq" id="pc-eq-ganancia"> </div>
+          <div class="price-val" id="pc-p-total">$0</div>
+        </div>
         <div class="price-card gold">
           <div class="price-lbl"><i class="ti ti-receipt"></i> Total trabajo</div>
           <div class="price-eq" id="pc-eq-total"> </div>
           <div class="price-val" id="pc-r-total">$0</div>
-        </div>
-      </div>
-      <div class="profit-row">
-        <span class="profit-lbl"><i class="ti ti-trending-up"></i> Ganancia estimada</span>
-        <div class="profit-vals">
-          <div class="profit-val"><span>total</span><span id="pc-p-total">$0</span></div>
         </div>
       </div>
       <div class="breakdown" id="pc-breakdown"></div>
@@ -707,6 +714,75 @@
 
     </div><!-- /view-artistica -->
 
+    <!-- ===================== SUBLIMADOS ===================== -->
+    <div class="view" id="view-sublimados">
+
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="toggle-btn" onclick="slToggleParams()" style="flex:1;">
+          <i class="ti ti-settings" id="sl-settings-icon"></i>
+          <span id="sl-toggle-label">Editar parámetros de costos</span>
+          <i class="ti ti-chevron-down" id="sl-toggle-icon"></i>
+          <span class="save-badge" id="sl-save-badge">Aplicado</span>
+        </button>
+        <button class="clear-btn" onclick="slLimpiar()"><i class="ti ti-trash"></i> Limpiar</button>
+      </div>
+      <div class="params-panel" id="sl-params-panel">
+        <div class="card" style="margin-top:.75rem;">
+          <p class="sec-title"><i class="ti ti-adjustments"></i> Mano de obra y margen</p>
+          <div class="param-cards-grid">
+            <div class="param-mini-card">
+              <div class="param-mini-lbl">Hora diseño</div>
+              <div class="param-mini-input-wrap"><span class="param-unit">$</span><input class="param-big-input" type="number" id="sl-hora-diseno" value="15000" min="0" step="500" oninput="slParamChange()"></div>
+            </div>
+            <div class="param-mini-card">
+              <div class="param-mini-lbl">Hora producción</div>
+              <div class="param-mini-input-wrap"><span class="param-unit">$</span><input class="param-big-input" type="number" id="sl-hora-prod" value="10000" min="0" step="500" oninput="slParamChange()"></div>
+            </div>
+            <div class="param-mini-card">
+              <div class="param-mini-lbl">Margen mat.</div>
+              <div class="param-mini-input-wrap"><input class="param-big-input" type="number" id="sl-margen" value="50" min="0" max="300" step="1" oninput="slParamChange()"><span class="param-unit">%</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <input class="desc-input" type="text" id="sl-desc" placeholder="Descripción del pedido (ej. Tazas personalizadas)">
+
+    <p class="sec-title" style="margin:.25rem 0 2px;"><i class="ti ti-files"></i> Ítems del pedido</p>
+    <div id="sl-items"></div>
+    <button class="add-btn" onclick="slAddItem()" style="margin-top:0;"><i class="ti ti-plus"></i> Agregar ítem</button>
+
+    <div class="results">
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-lbl"><i class="ti ti-droplet"></i> Materiales</div>
+          <div class="price-eq" id="sl-eq-mat"> </div>
+          <div class="price-val" id="sl-r-mat">$0</div>
+        </div>
+        <div class="price-card profit">
+          <div class="price-lbl"><i class="ti ti-trending-up"></i> Ganancia</div>
+          <div class="price-eq" id="sl-eq-ganancia"> </div>
+          <div class="price-val" id="sl-p-total">$0</div>
+        </div>
+        <div class="price-card gold">
+          <div class="price-lbl"><i class="ti ti-receipt"></i> Total pedido</div>
+          <div class="price-eq" id="sl-eq-total"> </div>
+          <div class="price-val" id="sl-r-total">$0</div>
+        </div>
+      </div>
+      <div class="breakdown" id="sl-breakdown"></div>
+    </div>
+
+    <button class="gen-pres-btn" onclick="slGenerarPresupuesto()">
+      <i class="ti ti-file-invoice"></i> Generar Presupuesto
+    </button>
+
+    </div><!-- /view-sublimados -->
+
+
   </div>
 </div>
 
@@ -717,6 +793,7 @@ const VIEWS={
   estampados:{sub:"Estampados",name:"Indumentaria + estampado DTF",back:true},
   papeleria:{sub:"Papelería Comercial",name:"Corte y aprovechamiento de hoja",back:true},
   artistica:{sub:"Papelería Artística",name:"Productos de diseño artesanal",back:true},
+  sublimados:{sub:"Sublimados",name:"Tazas, vasos y más",back:true},
 };
 function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -728,6 +805,7 @@ function showView(name){
   if(name==='estampados' && !window._estInit){estInit();window._estInit=true;}
   if(name==='papeleria' && !window._pcInit){pcInit();window._pcInit=true;}
   if(name==='artistica' && !window._paInit){paInit();window._paInit=true;}
+  if(name==='sublimados' && !window._slInit){slInit();window._slInit=true;}
 }
 function goHome(){showView('home');}
 
@@ -783,7 +861,8 @@ function estAddItem(){
     <div class="field-row"><span class="field-label">Horas de estampado</span>
       <div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 est-hs-estampado" value="0.5" min="0" step="0.5" oninput="calcular()"><span class="field-unit">hs</span></div></div>
     <div class="calc-info">
-      <div class="chip"><b class="est-sub">$0</b><small>Materiales ítem</small></div>
+      <div class="chip"><b class="est-sub">$0</b><small>Costo de Materiales</small></div>
+      <div class="chip"><b class="est-ganancia">$0</b><small>Ganancia</small></div>
       <div class="chip"><b class="est-unit-price">$0</b><small>Precio unitario</small></div>
     </div>`;
   c.appendChild(div);
@@ -840,6 +919,7 @@ function calcular(){
     totalGanancia+=gananciaItem;
     totalUnidades+=qty;
     it.querySelector('.est-sub').textContent=fmt(matUnit*qty);
+    it.querySelector('.est-ganancia').textContent=fmt(gananciaItem);
     it.querySelector('.est-unit-price').textContent=fmt(precioUnit);
     window._presItems.push({nombre,qty,precioUnit,totalItem});
     const detalle=nStamps>0?`${nStamps} estampa${nStamps===1?'':'s'}`:'sin estampa';
@@ -850,6 +930,7 @@ function calcular(){
   document.getElementById('r-total').textContent=fmt(totalPedido);
   document.getElementById('eq-mat').textContent=`${items.length} ítem${items.length===1?'':'s'} · ${totalUnidades} artículos`;
   document.getElementById('eq-total').textContent='materiales + margen + mano de obra';
+  document.getElementById('eq-ganancia').textContent=`${items.length} producto${items.length===1?'':'s'}`;
   document.getElementById('p-total').textContent=fmt(totalGanancia);
 
   bk+='<hr class="bk-sep">';
@@ -871,8 +952,9 @@ let PC_MATERIALS=[
   {name:"Holográfico", sheet:"Hoja A4", w:21, h:29.7, pack:20,  price:12000},
   {name:"Matelina",    sheet:"Hoja A4", w:21, h:29.7, pack:100, price:10000},
   {name:"Tatufan",     sheet:"Hoja A4", w:21, h:29.7, pack:10,  price:27000},
-  {name:"Vinilo de corte", sheet:"Vinilo de corte", w:68,  h:50, pack:1, price:3500, fixedPack:true},
-  {name:"Vinilo impreso",  sheet:"Vinilo impreso",  w:100, h:50, pack:1, price:6000, fixedPack:true},
+  {name:"Vinilo de corte", sheet:"Vinilo de corte", w:60,  h:100, pack:1, price:3500, fixedPack:true, isVinilo:true},
+  {name:"Vinilo impreso",  sheet:"Vinilo impreso",  w:100, h:50, pack:1, price:6000, fixedPack:true, isPrecioLibre:true},
+  {name:"DTF UV",          sheet:"DTF UV",          w:30,  h:100, pack:1, price:5000, fixedPack:true, isVinilo:true, isDTFUV:true, minCm:20},
 ];
 function pcNum(el){return parseFloat(el.value)||0;}
 function pcById(id){return parseFloat(document.getElementById(id).value)||0;}
@@ -881,18 +963,50 @@ function pcCostPerSheet(m){return m.pack>0?m.price/m.pack:0;}
 function pcMatOptions(){return PC_MATERIALS.map((m,i)=>`<option value="${i}">${m.name}</option>`).join('');}
 
 function pcRenderMatTable(){
-  document.getElementById('pc-mat-body').innerHTML=PC_MATERIALS.map((m,i)=>`<tr>
-    <td>${m.name}</td>
-    <td class="mat-size">${pcCm(m.w)} × ${pcCm(m.h)} cm</td>
-    <td>${m.fixedPack?'<span class="mat-fixed">1</span>':`<input class="mat-in" type="number" value="${m.pack}" min="1" step="1" oninput="pcSetMat(${i},'pack',this.value)">`}</td>
-    <td><input class="mat-in" type="number" value="${m.price}" min="0" step="100" oninput="pcSetMat(${i},'price',this.value)"></td>
-    <td class="mat-derived" id="pc-cps-${i}">${fmt(pcCostPerSheet(m))}</td>
-  </tr>`).join('');
+  document.getElementById('pc-mat-body').innerHTML=PC_MATERIALS.map((m,i)=>{
+    if(m.isPrecioLibre) return ''; // precio libre: no aparece en params
+    const wLabel=m.isDTFUV?'30':pcCm(m.w);
+    const packCell=m.isVinilo
+      ? `<input class="mat-in" type="number" value="${m.h}" min="10" step="10" oninput="pcSetMat(${i},'h',this.value)"> cm`
+      : m.fixedPack
+        ? '<span class="mat-fixed">1</span>'
+        : `<input class="mat-in" type="number" value="${m.pack}" min="1" step="1" oninput="pcSetMat(${i},'pack',this.value)">`;
+    const cpsLabel=m.isVinilo?fmt(m.price/Math.max(1,m.h))+'/cm':fmt(pcCostPerSheet(m));
+    const sizeLabel=m.isVinilo?`${wLabel} × <b>${pcCm(m.h)}</b> cm`:`${pcCm(m.w)} × ${pcCm(m.h)} cm`;
+    return `<tr>
+      <td>${m.name}</td>
+      <td class="mat-size">${sizeLabel}</td>
+      <td>${packCell}</td>
+      <td><input class="mat-in" type="number" value="${m.price}" min="0" step="100" oninput="pcSetMat(${i},'price',this.value)"></td>
+      <td class="mat-derived" id="pc-cps-${i}">${cpsLabel}</td>
+    </tr>`;
+  }).join('');
 }
 function pcSetMat(i,key,val){
   PC_MATERIALS[i][key]=parseFloat(val)||0;
-  document.getElementById('pc-cps-'+i).textContent=fmt(pcCostPerSheet(PC_MATERIALS[i]));
+  const m=PC_MATERIALS[i];
+  document.getElementById('pc-cps-'+i).textContent=m.isVinilo?fmt(m.price/Math.max(1,m.h))+'/cm':fmt(pcCostPerSheet(m));
   pcCalcular();pcFlash();
+}
+
+function pcOnMatChange(sel){
+  const it=sel.closest('.pc-item');
+  const m=PC_MATERIALS[parseInt(sel.value)||0]||PC_MATERIALS[0];
+  const dimsWrap=it.querySelector('.pc-dims-wrap');
+  const precioWrap=it.querySelector('.pc-precio-libre-wrap');
+  const otrosNombreWrap=it.querySelector('.pc-otros-nombre-wrap');
+  const layoutEl=it.querySelector('.pc-layout');
+  if(m.isPrecioLibre){
+    dimsWrap.style.display='none';
+    precioWrap.style.display='';
+    otrosNombreWrap.style.display=m.isOtros?'':'none';
+    if(layoutEl) layoutEl.innerHTML='';
+  } else {
+    dimsWrap.style.display='';
+    precioWrap.style.display='none';
+    otrosNombreWrap.style.display='none';
+  }
+  pcCalcular();
 }
 
 function pcAddItem(){
@@ -906,22 +1020,31 @@ function pcAddItem(){
     </div>
     <input type="text" class="est-titulo pc-titulo" placeholder="Nombre del ítem (ej. Stickers circulares)" oninput="pcCalcular()">
     <div class="field-row"><span class="field-label">Material</span>
-      <select class="a-select pc-mat" style="max-width:210px;" onchange="pcCalcular()">${pcMatOptions()}</select></div>
-    <div class="field-row"><span class="field-label">Hoja</span><span class="field-unit pc-sheet">—</span></div>
-    <div class="field-row"><span class="field-label">Medida del corte</span>
-      <div class="dim-row"><input type="number" class="a-input w55 pc-w" value="5" min="0.5" step="0.5" oninput="pcCalcular()"><span class="dim-x">×</span><input type="number" class="a-input w55 pc-h" value="5" min="0.5" step="0.5" oninput="pcCalcular()"><span class="field-unit">cm</span></div></div>
-    <div class="field-row"><span class="field-label">Separación entre cortes</span>
-      <div class="dim-row"><input type="number" class="a-input w55 pc-gap" value="0.3" min="0" step="0.1" oninput="pcCalcular()"><span class="field-unit">cm</span></div></div>
-    <div class="field-row"><span class="field-label">Cantidad de piezas</span>
-      <div class="dim-row"><input type="number" class="a-input w70 pc-qty" value="50" min="1" step="10" oninput="pcCalcular()"></div></div>
+      <select class="a-select pc-mat" style="max-width:210px;" onchange="pcOnMatChange(this)">${pcMatOptions()}</select></div>
+    <div class="pc-dims-wrap">
+      <div class="field-row"><span class="field-label">Hoja</span><span class="field-unit pc-sheet">—</span></div>
+      <div class="field-row"><span class="field-label">Medida del corte</span>
+        <div class="dim-row"><input type="number" class="a-input w55 pc-w" value="5" min="0.5" step="0.5" oninput="pcCalcular()"><span class="dim-x">×</span><input type="number" class="a-input w55 pc-h" value="5" min="0.5" step="0.5" oninput="pcCalcular()"><span class="field-unit">cm</span></div></div>
+      <div class="field-row"><span class="field-label">Separación entre cortes</span>
+        <div class="dim-row"><input type="number" class="a-input w55 pc-gap" value="0.3" min="0" step="0.1" oninput="pcCalcular()"><span class="field-unit">cm</span></div></div>
+      <div class="field-row"><span class="field-label">Cantidad de piezas</span>
+        <div class="dim-row"><input type="number" class="a-input w70 pc-qty" value="50" min="1" step="10" oninput="pcCalcular()"></div></div>
+    </div>
+    <div class="pc-precio-libre-wrap" style="display:none;">
+      <div class="pc-otros-nombre-wrap" style="display:none;">
+        <input type="text" class="est-titulo pc-otros-input-nombre" placeholder="Nombre del insumo (ej. Glitter)" oninput="pcCalcular()" style="margin-bottom:8px;">
+      </div>
+      <div class="field-row"><span class="field-label">Monto de compra (total)</span>
+        <div style="display:flex;align-items:center;gap:5px;"><span class="field-unit">$</span><input type="number" class="a-input w90 pc-precio-libre" value="0" min="0" step="100" oninput="pcCalcular()"></div></div>
+    </div>
     <p class="est-sub-title" style="margin-top:10px;">Mano de obra (por unidad)</p>
     <div class="field-row"><span class="field-label">Horas de diseño</span>
       <div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 pc-hs-diseno" value="0" min="0" step="0.5" oninput="pcCalcular()"><span class="field-unit">hs</span></div></div>
     <div class="field-row"><span class="field-label">Horas de corte</span>
       <div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 pc-hs-corte" value="0.5" min="0" step="0.5" oninput="pcCalcular()"><span class="field-unit">hs</span></div></div>
     <div class="calc-info">
-      <div class="chip"><b class="pc-ppp">0</b><small>Cortes / hoja</small></div>
-      <div class="chip"><b class="pc-hojas">0</b><small>Hojas</small></div>
+      <div class="chip"><b class="pc-ppp">0</b><small class="pc-ppp-lbl">Cortes / hoja</small></div>
+      <div class="chip"><b class="pc-hojas">0</b><small class="pc-hojas-lbl">Hojas</small></div>
       <div class="chip"><b class="pc-unit-price">$0</b><small>Total ítem</small></div>
     </div>
     <div class="layout-wrap pc-layout"></div>
@@ -1009,13 +1132,15 @@ function pcFlatten(node,ox,oy,g,out){
   }
   return out;
 }
-function pcDrawLayout(W,H,pack,g){
+function pcDrawLayout(W,H,pack,g,limit){
   if(!pack||pack.n<=0) return '<div class="layout-empty"><i class="ti ti-alert-triangle"></i> El corte no entra en la hoja</div>';
   const rects=pcFlatten(pack,0,0,g,[]);
+  const drawCount=(limit!=null&&limit>0)?Math.min(limit,rects.length):rects.length;
   let r=`<svg viewBox="-0.4 -0.4 ${(W+0.8).toFixed(2)} ${(H+0.8).toFixed(2)}" class="sheet-svg" preserveAspectRatio="xMidYMid meet">`;
   r+=`<rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff" stroke="#3B1C6B" stroke-width="0.3" rx="0.4"/>`;
   if(rects.length<=3000){
-    for(const p of rects){
+    for(let i=0;i<drawCount;i++){
+      const p=rects[i];
       r+=`<rect x="${p.x.toFixed(2)}" y="${p.y.toFixed(2)}" width="${p.w.toFixed(2)}" height="${p.h.toFixed(2)}" fill="rgba(240,128,45,0.20)" stroke="#d96a1c" stroke-width="0.16" rx="0.15"/>`;
     }
   }
@@ -1036,30 +1161,68 @@ function pcCalcular(){
     const W=m.w,H=m.h;
     const w=pcNum(it.querySelector('.pc-w')), h=pcNum(it.querySelector('.pc-h')), g=pcNum(it.querySelector('.pc-gap'));
     const qty=Math.max(1,parseInt(it.querySelector('.pc-qty').value)||1);
-    const pack=pcPack(W,H,w,h,g);
-    const cortes=pack.n;
-    const hojas=cortes>0?Math.ceil(qty/cortes):0;
-    const cps=pcCostPerSheet(m);
-    const costoMat=hojas*cps;
+    let cortes,hojas,costoMat,layoutHtml,sheetLabel,bkLabel;
     const hsDiseno=parseFloat(it.querySelector('.pc-hs-diseno').value)||0;
     const hsCorte=parseFloat(it.querySelector('.pc-hs-corte').value)||0;
     const mdoTotal=hsDiseno*horaDis+hsCorte*horaCor;
+    if(m.isPrecioLibre){
+      // Vinilo impreso / Otros: precio libre sin optimizador de cortes
+      costoMat=pcNum(it.querySelector('.pc-precio-libre'));
+      const nombreInsumo=m.isOtros?(it.querySelector('.pc-otros-input-nombre').value||'Otros Insumos'):m.name;
+      sheetLabel=nombreInsumo;
+      layoutHtml='';
+      it.querySelector('.pc-ppp').textContent='—';
+      it.querySelector('.pc-hojas').textContent='—';
+      it.querySelector('.pc-ppp-lbl').textContent='Cortes/hoja';
+      it.querySelector('.pc-hojas-lbl').textContent='Hojas';
+      if(it.querySelector('.pc-layout')) it.querySelector('.pc-layout').innerHTML='';
+      bkLabel=`${nombre} · ${nombreInsumo}`;
+    } else if(m.isVinilo){
+      // Vinilo de corte / DTF UV: ancho fijo, cobrar por cm de alto usado
+      const wFijo=m.isDTFUV?30:60;
+      const cortesXfila=Math.max(1,Math.floor((wFijo+g)/(w+g)));
+      const filasNec=Math.ceil(qty/cortesXfila);
+      let cmVinilo=filasNec>0?filasNec*h+(filasNec-1)*g:0;
+      if(m.minCm&&cmVinilo<m.minCm) cmVinilo=m.minCm; // mínimo DTF UV = 20cm
+      const precioCm=m.price/Math.max(1,m.h);
+      costoMat=cmVinilo*precioCm;
+      const packV=pcPack(wFijo,cmVinilo>0?cmVinilo:h,w,h,g);
+      layoutHtml=pcDrawLayout(wFijo,cmVinilo>0?cmVinilo:h,packV,g,qty);
+      sheetLabel=`${m.name} · ${wFijo}cm ancho · ${fmt(precioCm)}/cm`;
+      it.querySelector('.pc-ppp').textContent=cortesXfila;
+      it.querySelector('.pc-hojas').textContent=cmVinilo.toFixed(1)+'cm';
+      it.querySelector('.pc-ppp-lbl').textContent='Cortes/fila';
+      it.querySelector('.pc-hojas-lbl').textContent=m.isDTFUV?'cm DTF UV':'cm vinilo';
+      bkLabel=`${nombre} · ${qty}u · ${cmVinilo.toFixed(1)}cm ${m.name}`;
+    } else {
+      const pack=pcPack(W,H,w,h,g);
+      cortes=pack.n;
+      hojas=cortes>0?Math.ceil(qty/cortes):0;
+      const cps=pcCostPerSheet(m);
+      costoMat=hojas*cps;
+      layoutHtml=pcDrawLayout(W,H,pack,g,qty);
+      sheetLabel=`${m.sheet} · ${pcCm(W)} × ${pcCm(H)} cm · ${fmt(cps)}/hoja`;
+      it.querySelector('.pc-ppp').textContent=cortes;
+      it.querySelector('.pc-hojas').textContent=hojas;
+      it.querySelector('.pc-ppp-lbl').textContent='Cortes / hoja';
+      it.querySelector('.pc-hojas-lbl').textContent='Hojas';
+      bkLabel=`${nombre} · ${qty}u · ${hojas} hoja${hojas===1?'':'s'}`;
+    }
     const totalItem=Math.round(costoMat*(1+margen)+mdoTotal);
     const gananciaItem=costoMat*margen+mdoTotal;
     totalBase+=costoMat; totalPedido+=totalItem; totalGanancia+=gananciaItem; totalPiezas+=qty;
-    it.querySelector('.pc-sheet').textContent=`${m.sheet} · ${pcCm(W)} × ${pcCm(H)} cm · ${fmt(cps)}/hoja`;
-    it.querySelector('.pc-ppp').textContent=cortes;
-    it.querySelector('.pc-hojas').textContent=hojas;
+    it.querySelector('.pc-sheet').textContent=sheetLabel;
     it.querySelector('.pc-unit-price').textContent=fmt(totalItem);
-    it.querySelector('.pc-layout').innerHTML=pcDrawLayout(W,H,pack,g);
+    it.querySelector('.pc-layout').innerHTML=layoutHtml;
     window._pcPresItems.push({nombre,qty,totalItem});
-    bk+=`<div class="bk-row"><span>${nombre} · ${qty}u · ${hojas} hoja${hojas===1?'':'s'}</span><span>${fmt(totalItem)}</span></div>`;
+    bk+=`<div class="bk-row"><span>${bkLabel}</span><span>${fmt(totalItem)}</span></div>`;
   });
 
   document.getElementById('pc-r-mat').textContent=fmt(totalBase);
   document.getElementById('pc-r-total').textContent=fmt(totalPedido);
   document.getElementById('pc-eq-mat').textContent=`${items.length} ítem${items.length===1?'':'s'} · ${totalPiezas} piezas`;
   document.getElementById('pc-eq-total').textContent='materiales + margen + mano de obra';
+  document.getElementById('pc-eq-ganancia').textContent=`${items.length} producto${items.length===1?'':'s'}`;
   document.getElementById('pc-p-total').textContent=fmt(totalGanancia);
 
   bk+='<hr class="bk-sep">';
@@ -1385,6 +1548,232 @@ function pcAddOtros(btn){
     +'<button class="remove-btn" onclick="this.closest(\'.pa-mat-row\').remove();pcCalcular()"><i class="ti ti-x"></i></button>';
   list.appendChild(row);
   pcCalcular();
+}
+
+/* ============ SUBLIMADOS ============ */
+var SL_PIEZAS=[
+  {name:'Taza ceramica', price:3000},
+  {name:'Vaso', price:2500},
+];
+var SL_MAT_TIPOS=[
+  {id:'pieza',     label:'Pieza'},
+  {id:'sublimado', label:'Sublimado'},
+  {id:'filmilo',   label:'Filmilo'},
+  {id:'dtfuv',     label:'DTF UV'},
+  {id:'vinilo',    label:'Vinilo de Corte'},
+];
+function slById(id){return parseFloat(document.getElementById(id).value)||0;}
+function slGetPCMat(name){return PC_MATERIALS.find(function(m){return m.name===name;})||null;}
+
+function slPiezaOptions(){
+  return SL_PIEZAS.map(function(p,i){return '<option value="'+i+'">'+p.name+' ('+fmt(p.price)+')</option>';}).join('');
+}
+function slTipoOptions(){
+  return SL_MAT_TIPOS.map(function(t){return '<option value="'+t.id+'">'+t.label+'</option>';}).join('');
+}
+function slRenderPiezas(){
+  document.getElementById('sl-piezas-body').innerHTML=SL_PIEZAS.map(function(p,i){
+    return '<tr>'
+      +'<td><input type="text" class="mat-in" style="width:120px;" value="'+p.name+'" oninput="slSetPieza('+i+',\'name\',this.value)"></td>'
+      +'<td style="text-align:right;"><input type="number" class="mat-in" value="'+p.price+'" min="0" step="100" oninput="slSetPieza('+i+',\'price\',this.value)"></td>'
+      +'<td><button class="remove-btn" onclick="slRemovePieza('+i+')"><i class="ti ti-trash"></i></button></td>'
+      +'</tr>';
+  }).join('');
+  slBuildPiezaSelects();
+}
+function slSetPieza(i,key,val){
+  SL_PIEZAS[i][key]=key==='price'?parseFloat(val)||0:val;
+  slBuildPiezaSelects(); slCalcular(); slFlash();
+}
+function slRemovePieza(i){
+  SL_PIEZAS.splice(i,1); slRenderPiezas(); slCalcular();
+}
+function slAddPieza(){
+  SL_PIEZAS.push({name:'Nueva pieza',price:0}); slRenderPiezas(); slFlash();
+}
+function slBuildPiezaSelects(){
+  document.querySelectorAll('#sl-items .sl-pieza-sel').forEach(function(sel){
+    var prev=sel.value;
+    sel.innerHTML=slPiezaOptions();
+    sel.value=prev;
+  });
+}
+function slOnMatTipoChange(sel){
+  var row=sel.closest('.sl-mat-row');
+  var tipo=sel.value;
+  row.querySelector('.sl-pieza-sec').style.display=tipo==='pieza'?'flex':'none';
+  row.querySelector('.sl-libre-sec').style.display=tipo==='sublimado'?'flex':'none';
+  row.querySelector('.sl-qty-sec').style.display=(tipo==='filmilo'||tipo==='dtfuv'||tipo==='vinilo')?'flex':'none';
+  if(tipo==='filmilo') row.querySelector('.sl-mat-unit').textContent='hojas';
+  if(tipo==='dtfuv')   row.querySelector('.sl-mat-unit').textContent='cm';
+  if(tipo==='vinilo')  row.querySelector('.sl-mat-unit').textContent='cm';
+  slCalcular();
+}
+function slAddMatRow(cont){
+  var row=document.createElement('div');
+  row.className='sl-mat-row pa-mat-row';
+  row.innerHTML='<select class="a-select" style="max-width:140px;" onchange="slOnMatTipoChange(this)">'+slTipoOptions()+'</select>'
+    +'<div class="sl-pieza-sec" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">'
+    +'<input type="text" class="est-titulo sl-pieza-nombre" placeholder="Nombre pieza" style="flex:1;min-width:90px;margin-bottom:0;" oninput="slCalcular()">'+'<span class="field-unit">$</span><input type="number" class="a-input pa-mat-qty sl-pieza-precio" value="0" min="0" step="100" oninput="slCalcular()">'
+    +'</div>'
+    +'<div class="sl-libre-sec" style="display:none;align-items:center;gap:4px;">'
+    +'<span class="field-unit">$</span><input type="number" class="a-input pa-mat-qty" value="0" min="0" step="100" oninput="slCalcular()">'
+    +'</div>'
+    +'<div class="sl-qty-sec" style="display:none;align-items:center;gap:4px;">'
+    +'<input type="number" class="a-input pa-mat-qty" value="1" min="0" step="1" oninput="slCalcular()">'
+    +'<span class="field-unit sl-mat-unit">hojas</span>'
+    +'</div>'
+    +'<button class="remove-btn" onclick="this.closest(\'.sl-mat-row\').remove();slCalcular()"><i class="ti ti-trash"></i></button>';
+  cont.appendChild(row);
+  slCalcular();
+}
+function slMatCost(row){
+  var tipo=row.querySelector('select').value;
+  if(tipo==='pieza') return parseFloat((row.querySelector('.sl-pieza-precio')||{}).value)||0;
+  if(tipo==='sublimado') return parseFloat(row.querySelector('.sl-libre-sec input').value)||0;
+  var qty=parseFloat(row.querySelector('.sl-qty-sec input').value)||0;
+  if(tipo==='filmilo'){
+    var m=slGetPCMat('Filmilo');
+    return m?(qty*(m.price/Math.max(1,m.pack))):0;
+  }
+  if(tipo==='dtfuv'){
+    var m=slGetPCMat('DTF UV');
+    var cm=Math.max(20,qty);
+    return m?(cm*(m.price/Math.max(1,m.h))):0;
+  }
+  if(tipo==='vinilo'){
+    var m=slGetPCMat('Vinilo de corte');
+    return m?(qty*(m.price/Math.max(1,m.h))):0;
+  }
+  return 0;
+}
+function slAddItem(){
+  var c=document.getElementById('sl-items');
+  var div=document.createElement('div');
+  div.className='est-item sl-item';
+  div.innerHTML=''
+    +'<div class="pc-item-head">'
+    +'<span class="pc-item-title">Item</span>'
+    +'<button class="remove-btn sl-item-del" onclick="slRemoveItem(this)"><i class="ti ti-trash"></i></button>'
+    +'</div>'
+    +'<input type="text" class="est-titulo sl-titulo" placeholder="Nombre del item (ej. Taza con foto)" oninput="slCalcular()">'
+    +'<div class="field-row"><span class="field-label">Cantidad de piezas</span>'
+    +'<input type="number" class="a-input w70 sl-qty" value="1" min="1" step="1" oninput="slCalcular()"></div>'
+    +'<p class="est-sub-title">Materiales (para el pedido completo)</p>'
+    +'<div class="sl-mats"></div>'
+    +'<button class="add-btn" onclick="slAddMat(this)" style="margin-top:6px;"><i class="ti ti-plus"></i> Agregar material</button>'
+    +'<p class="est-sub-title" style="margin-top:10px;">Mano de obra (por unidad)</p>'
+    +'<div class="field-row"><span class="field-label">Horas de diseño</span>'
+    +'<div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 sl-hs-diseno" value="0" min="0" step="0.5" oninput="slCalcular()"><span class="field-unit">hs</span></div></div>'
+    +'<div class="field-row"><span class="field-label">Horas de producción</span>'
+    +'<div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 sl-hs-prod" value="0.5" min="0" step="0.5" oninput="slCalcular()"><span class="field-unit">hs</span></div></div>'
+    +'<div class="calc-info">'
+    +'<div class="chip"><b class="sl-mat-total">$0</b><small>Mat. pedido</small></div>'
+    +'<div class="chip"><b class="sl-unit-price">$0</b><small>Precio unitario</small></div>'
+    +'</div>';
+  c.appendChild(div);
+  slRenumber(); slCalcular();
+}
+function slAddMat(btn){
+  slAddMatRow(btn.closest('.sl-item').querySelector('.sl-mats'));
+}
+function slRemoveItem(btn){
+  if(document.querySelectorAll('#sl-items .sl-item').length<=1) return;
+  btn.closest('.sl-item').remove(); slRenumber(); slCalcular();
+}
+function slRenumber(){
+  var items=document.querySelectorAll('#sl-items .sl-item');
+  items.forEach(function(it,i){
+    var t=(it.querySelector('.sl-titulo').value||'').trim();
+    it.querySelector('.pc-item-title').textContent=t||('Item '+(i+1));
+    it.querySelector('.sl-item-del').style.visibility=items.length>1?'visible':'hidden';
+  });
+}
+function slInit(){
+  document.getElementById('sl-items').innerHTML='';
+  slRenderPiezas();
+  slAddItem();
+}
+function slParamChange(){slCalcular();slFlash();}
+function slFlash(){var b=document.getElementById('sl-save-badge');b.classList.add('show');clearTimeout(window._slst);window._slst=setTimeout(function(){b.classList.remove('show');},1500);}
+function slToggleParams(){
+  var p=document.getElementById('sl-params-panel');p.classList.toggle('open');
+  var open=p.classList.contains('open');
+  document.getElementById('sl-toggle-icon').className=open?'ti ti-chevron-up':'ti ti-chevron-down';
+  document.getElementById('sl-settings-icon').className=open?'ti ti-settings-filled':'ti ti-settings';
+  document.getElementById('sl-toggle-label').textContent=open?'Cerrar parametros':'Editar parametros de costos';
+}
+function slLimpiar(){
+  document.getElementById('sl-items').innerHTML='';
+  document.getElementById('sl-desc').value='';
+  window._slInit=false; slInit(); window._slInit=true;
+  document.querySelectorAll('#sl-items input[type=number]').forEach(function(el){el.value=0;});
+  slCalcular();
+}
+function slCalcular(){
+  var margen=(parseFloat(document.getElementById('sl-margen').value)||0)/100;
+  var horaDis=slById('sl-hora-diseno'), horaProd=slById('sl-hora-prod');
+  var items=document.querySelectorAll('#sl-items .sl-item');
+  var totalPedido=0,totalBase=0,totalGanancia=0,totalUnidades=0,bk='';
+  window._slPresItems=[];
+  items.forEach(function(it,idx){
+    var nombre=((it.querySelector('.sl-titulo').value)||'').trim()||('Item '+(idx+1));
+    it.querySelector('.pc-item-title').textContent=nombre;
+    var qty=Math.max(1,parseInt(it.querySelector('.sl-qty').value)||1);
+    var costoMat=0;
+    it.querySelectorAll('.sl-mat-row').forEach(function(row){costoMat+=slMatCost(row);});
+    var hsDis=parseFloat(it.querySelector('.sl-hs-diseno').value)||0;
+    var hsProd=parseFloat(it.querySelector('.sl-hs-prod').value)||0;
+    var mdoUnit=hsDis*horaDis+hsProd*horaProd;
+    var matUnitConMargen=(costoMat/Math.max(1,qty))*(1+margen);
+    var precioUnit=Math.round(matUnitConMargen+mdoUnit);
+    var totalItem=precioUnit*qty;
+    var gananciaItem=((costoMat/Math.max(1,qty))*margen+mdoUnit)*qty;
+    totalBase+=costoMat; totalPedido+=totalItem; totalGanancia+=gananciaItem; totalUnidades+=qty;
+    it.querySelector('.sl-mat-total').textContent=fmt(costoMat);
+    it.querySelector('.sl-unit-price').textContent=fmt(precioUnit);
+    window._slPresItems.push({nombre:nombre,qty:qty,precioUnit:precioUnit,totalItem:totalItem});
+    bk+='<div class="bk-row"><span>'+nombre+' · '+qty+'u</span><span>'+fmt(totalItem)+'</span></div>';
+  });
+  document.getElementById('sl-r-mat').textContent=fmt(totalBase);
+  document.getElementById('sl-r-total').textContent=fmt(totalPedido);
+  document.getElementById('sl-p-total').textContent=fmt(totalGanancia);
+  document.getElementById('sl-eq-mat').textContent=items.length+' item'+(items.length===1?'':'s')+' · '+totalUnidades+' unidades';
+  document.getElementById('sl-eq-total').textContent='materiales + margen + mano de obra';
+  document.getElementById('sl-eq-ganancia').textContent=items.length+' item'+(items.length===1?'':'s');
+  bk+='<hr class="bk-sep">';
+  bk+='<div class="bk-row is-profit"><span style="font-weight:600;color:var(--purple);">Ganancia total</span><span>'+fmt(totalGanancia)+'</span></div>';
+  document.getElementById('sl-breakdown').innerHTML=bk;
+}
+function slGenerarPresupuesto(){
+  var items=window._slPresItems||[];
+  var desc=(document.getElementById('sl-desc').value||'').trim();
+  var total=items.reduce(function(s,it){return s+it.totalItem;},0);
+  var fecha=new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'});
+  var logoSrc=document.querySelector('.header img.logo').src;
+  var rows='';
+  items.forEach(function(it){
+    rows+='<tr><td>'+it.nombre.toUpperCase()+'</td><td>'+it.qty+'</td><td>'+fmt(it.precioUnit)+'</td><td>'+fmt(it.totalItem)+'</td></tr>';
+  });
+  var wa='<svg class="pres-wa-icon" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.114.554 4.1 1.522 5.826L.057 23.486a.5.5 0 0 0 .613.613l5.701-1.447A11.93 11.93 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.368l-.36-.214-3.714.943.981-3.624-.235-.372A9.817 9.817 0 0 1 2.182 12C2.182 6.565 6.565 2.182 12 2.182S21.818 6.565 21.818 12 17.435 21.818 12 21.818z"/></svg>';
+  document.getElementById('pres-capture').innerHTML=''
+    +'<div class="pres-blob pres-blob-tr"></div><div class="pres-blob pres-blob-bl"></div><div class="pres-blob pres-blob-br"></div>'
+    +'<div class="pres-inner">'
+    +'<div class="pres-header">'
+    +'<img src="'+logoSrc+'" class="pres-logo" alt="Antula Estudio">'
+    +'<div class="pres-title-block"><p class="pres-title">Presupuesto</p><p class="pres-date">'+fecha+'</p></div>'
+    +'</div>'
+    +(desc?'<p style="font-size:13px;color:#5c5266;margin:0 0 10px;font-weight:500;">'+desc+'</p>':'')
+    +'<hr class="pres-divider">'
+    +'<table class="pres-table"><thead><tr><th>Concepto</th><th>Cantidad</th><th>Valor Unidad</th><th>Total</th></tr></thead><tbody>'+rows+'</tbody></table>'
+    +'<div class="pres-total-row"><span class="pres-total-label">TOTAL:</span><span class="pres-total-val">'+fmt(total)+'</span></div>'
+    +'<div class="pres-footer">'
+    +'<div class="pres-contact-item"><i class="ti ti-mail"></i> antulaestudio@gmail.com</div>'
+    +'<div class="pres-contact-item">'+wa+' 3576477329</div>'
+    +'</div>'
+    +'<p class="pres-note">Los pedidos son reservados con una seña del 50%</p>'
+    +'</div>';
+  document.getElementById('pres-overlay').classList.remove('hidden');
 }
 </script>
 
