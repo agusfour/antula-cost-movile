@@ -2684,6 +2684,7 @@ var _gestFilter='Todos';
 var _gestPendingId=null;
 var _gestPendingVentId=null;
 
+
 function escHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
@@ -2744,29 +2745,26 @@ function renderPres(data){
     return;
   }
   var badgeMap={Pendiente:'pendiente',Vencido:'vencido',Confirmado:'confirmado',Descartado:'vencido'};
-  var rows=filtered.map(function(p){
+  list.innerHTML=filtered.map(function(p){
     var bc=badgeMap[p.estadoEfectivo]||'pendiente';
-    var id=p.id;
-    var acciones='<button class="gest-btn" style="background:rgba(59,28,107,.08);color:var(--purple);border:1px solid rgba(59,28,107,.15);" onclick="gestVerPres('+id+')"><i class="ti ti-eye"></i> Ver</button>';
+    var actionBtns='';
     if(p.estadoEfectivo==='Pendiente'){
-      acciones+='<button class="gest-btn confirm" data-cliente="'+escHtml(p.cliente)+'" data-total="'+p.total+'" onclick="gestOpenConfirm('+id+',this.dataset.cliente,parseFloat(this.dataset.total))"><i class="ti ti-check"></i> Confirmar</button>'
-        +'<button class="gest-btn danger" onclick="gestDescartar('+id+')"><i class="ti ti-x"></i> Descartar</button>';
+      actionBtns='<button class="gest-btn confirm" data-id="'+p.id+'" data-cliente="'+escHtml(p.cliente)+'" data-total="'+p.total+'" onclick="gestOpenConfirm(this.dataset.id,this.dataset.cliente,parseFloat(this.dataset.total))">'
+        +'<i class="ti ti-check"></i> Confirmar venta</button>'
+        +'<button class="gest-btn danger" data-id="'+p.id+'" onclick="gestDescartar(this.dataset.id)">'
+        +'<i class="ti ti-x"></i> Descartar</button>';
     }
-    return '<tr>'
-      +'<td style="color:var(--muted);white-space:nowrap;font-size:12px;">'+fmtFecha(p.fecha).substring(0,10)+'</td>'
-      +'<td><div style="font-weight:600;font-size:13px;">'+escHtml(p.cliente||'Sin nombre')+'</div>'
-      +(p.descripcion?'<div style="font-size:11px;color:var(--muted);">'+escHtml(p.descripcion)+'</div>':'')
-      +'</td>'
-      +'<td style="font-size:12px;color:var(--muted);">'+escHtml(p.categoria)+'</td>'
-      +'<td style="font-weight:700;color:var(--purple);white-space:nowrap;">'+fmt(p.total)+'</td>'
-      +'<td><span class="gest-badge '+bc+'">'+p.estadoEfectivo+'</span></td>'
-      +'<td style="white-space:nowrap;"><div style="display:flex;gap:4px;flex-wrap:wrap;">'+acciones+'</div></td>'
-      +'</tr>';
+    var verBtn='<button class="gest-btn" style="background:rgba(59,28,107,.08);color:var(--purple);border:1px solid rgba(59,28,107,.15);" data-id="'+p.id+'" onclick="gestVerPres(this.dataset.id)">'
+      +'<i class="ti ti-eye"></i> Ver</button>';
+    return '<div class="gest-card">'
+      +'<div class="gest-card-head"><span class="gest-card-name">'+escHtml(p.cliente||'Sin nombre')+'</span>'
+      +'<span class="gest-badge '+bc+'">'+p.estadoEfectivo+'</span></div>'
+      +'<div class="gest-card-meta">'+escHtml(p.categoria)+(p.fecha?' · '+fmtFecha(p.fecha):'')+(p.vendedora?' · '+escHtml(p.vendedora):'')+'</div>'
+      +(p.descripcion?'<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">'+escHtml(p.descripcion)+'</div>':'')
+      +'<div class="gest-card-total">'+fmt(p.total)+'</div>'
+      +'<div class="gest-card-btns">'+verBtn+(actionBtns?actionBtns:'')+'</div>'
+      +'</div>';
   }).join('');
-  list.innerHTML='<div class="gest-card" style="padding:10px;overflow-x:auto;">'
-    +'<table class="eg-table"><thead><tr>'
-    +'<th>Fecha</th><th>Cliente</th><th>Categoría</th><th>Total</th><th>Estado</th><th></th>'
-    +'</tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 
 var _gestVentFilter='Todos';
@@ -2808,32 +2806,27 @@ function renderVentas(data){
     list.innerHTML='<div class="gest-empty"><i class="ti ti-shopping-cart"></i>Sin ventas en esta categoría</div>';
     return;
   }
-  var rows=filtered.map(function(v){
+  list.innerHTML=filtered.map(function(v){
       var bc=v.estado==='Pagado'?'pagado':'seniado';
-      var id=v.id;
-      var acciones='<button class="gest-btn" style="background:rgba(59,28,107,.08);color:var(--purple);border:1px solid rgba(59,28,107,.15);" onclick="gestOpenPagosModal('+id+')"><i class="ti ti-history"></i> Pagos</button>';
-      if(v.estado!=='Pagado'){
-        acciones+='<button class="gest-btn pago" data-cliente="'+escHtml(v.cliente)+'" data-saldo="'+v.saldo+'" onclick="gestOpenPago('+id+',this.dataset.cliente,parseFloat(this.dataset.saldo))"><i class="ti ti-credit-card"></i> Registrar pago</button>';
-      }
-      return '<tr>'
-        +'<td style="color:var(--muted);white-space:nowrap;font-size:12px;">'+fmtFecha(v.fecha).substring(0,10)+'</td>'
-        +'<td><div style="font-weight:600;font-size:13px;">'+escHtml(v.cliente||'Sin nombre')+'</div>'
-        +(v.descripcion?'<div style="font-size:11px;color:var(--muted);">'+escHtml(v.descripcion)+'</div>':'')
-        +'</td>'
-        +'<td style="font-size:12px;color:var(--muted);">'+escHtml(v.categoria)+'</td>'
-        +'<td style="white-space:nowrap;">'
-        +'<div style="font-weight:700;color:var(--purple);">'+fmt(v.total)+'</div>'
-        +(v.saldo>0?'<div style="font-size:11px;color:var(--magenta);font-weight:600;">Saldo: '+fmt(v.saldo)+'</div>':'')
-        +'<div style="font-size:11px;color:#2a9d8f;font-weight:600;">Cobrado: '+fmt(v.seniado)+'</div>'
-        +'</td>'
-        +'<td><span class="gest-badge '+bc+'">'+v.estado+'</span></td>'
-        +'<td style="white-space:nowrap;"><div style="display:flex;gap:4px;">'+acciones+'</div></td>'
-        +'</tr>';
+      var histBtn='<button class="gest-btn" style="background:rgba(59,28,107,.08);color:var(--purple);border:1px solid rgba(59,28,107,.15);" data-id="'+v.id+'" onclick="gestOpenPagosModal(this.dataset.id)">'
+      +'<i class="ti ti-history"></i> Pagos</button>';
+    var pagoBtn=v.estado!=='Pagado'
+        ?'<button class="gest-btn pago" data-id="'+v.id+'" data-cliente="'+escHtml(v.cliente)+'" data-saldo="'+v.saldo+'" onclick="gestOpenPago(this.dataset.id,this.dataset.cliente,parseFloat(this.dataset.saldo))">'
+          +'<i class="ti ti-credit-card"></i> Registrar pago</button>'
+        :'';
+      return '<div class="gest-card">'
+        +'<div class="gest-card-head"><span class="gest-card-name">'+escHtml(v.cliente||'Sin nombre')+'</span>'
+        +'<span class="gest-badge '+bc+'">'+v.estado+'</span></div>'
+        +'<div class="gest-card-meta">'+escHtml(v.categoria)+(v.fecha?' · '+fmtFecha(v.fecha):'')+(v.vendedora?' · '+escHtml(v.vendedora):'')+'</div>'
+        +(v.descripcion?'<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">'+escHtml(v.descripcion)+'</div>':'')
+        +'<div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;">'
+        +'<div class="gest-card-total">'+fmt(v.total)+'</div>'
+        +(v.saldo>0?'<div style="font-size:12px;color:var(--magenta);font-weight:600;">Saldo: '+fmt(v.saldo)+'</div>':'')
+        +'<div style="font-size:12px;color:#2a9d8f;font-weight:600;">Cobrado: '+fmt(v.seniado)+'</div>'
+        +'</div>'
+        +'<div class="gest-card-btns">'+histBtn+(pagoBtn?pagoBtn:'')+'</div>'
+        +'</div>';
     }).join('');
-  list.innerHTML='<div class="gest-card" style="padding:10px;overflow-x:auto;">'
-    +'<table class="eg-table"><thead><tr>'
-    +'<th>Fecha</th><th>Cliente</th><th>Categoría</th><th>Total / Saldo</th><th>Estado</th><th></th>'
-    +'</tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 
 function gestOpenConfirm(id,cliente,total){
@@ -3013,7 +3006,24 @@ function gestSavePago(id){
 }
 
 
-/* ============ EGRESOS ============ */
+function gestInit(){
+  _gestFilter='Pendiente';
+  document.querySelectorAll('.gest-filter.pf').forEach(function(b){
+    b.classList.toggle('active',b.dataset.filter==='Pendiente');
+  });
+  _gestVentFilter='Con saldo';
+  var vm={'Todos':'vf-todos','Con saldo':'vf-saldo','Pagado':'vf-pagado'};
+  Object.keys(vm).forEach(function(k){
+    var el=document.getElementById(vm[k]);
+    if(el) el.classList.toggle('active',k==='Con saldo');
+  });
+  document.getElementById('gest-tab-pres').className='ot-tab active';
+  document.getElementById('gest-tab-vent').className='ot-tab';
+  document.getElementById('gest-panel-pres').style.display='';
+  document.getElementById('gest-panel-vent').style.display='none';
+  gestLoadPres();
+}
+
 var _egTipoSel=-1;
 var _egTipos=['Mercadería','Servicios y transportes','Mantenimiento','Inversiones'];
 var _egPills=['eg-pill-0','eg-pill-1','eg-pill-2','eg-pill-3'];
@@ -3179,24 +3189,6 @@ function egEditar(){
   alert('Próximamente — avisale a Agustín para editar este registro.');
 }
 
-function gestInit(){
-  _gestFilter='Pendiente';
-  document.querySelectorAll('.gest-filter.pf').forEach(function(b){
-    b.classList.toggle('active',b.dataset.filter==='Pendiente');
-  });
-  _gestVentFilter='Con saldo';
-  var vm={'Todos':'vf-todos','Con saldo':'vf-saldo','Pagado':'vf-pagado'};
-  Object.keys(vm).forEach(function(k){
-    var el=document.getElementById(vm[k]);
-    if(el) el.classList.toggle('active',k==='Con saldo');
-  });
-  document.getElementById('gest-tab-pres').className='ot-tab active';
-  document.getElementById('gest-tab-vent').className='ot-tab';
-  document.getElementById('gest-panel-pres').style.display='';
-  document.getElementById('gest-panel-vent').style.display='none';
-  gestLoadPres();
-}
-
 
 document.addEventListener('click',function(e){
   if(!e.target.closest('.eg-dd-wrap')){var o=document.getElementById('eg-dd-opts');if(o)o.classList.add('hidden');}
@@ -3206,8 +3198,25 @@ document.addEventListener('click',function(e){
 <!-- MODAL PRESUPUESTO -->
 <div class="pres-overlay hidden" id="pres-overlay" onclick="if(event.target===this)cerrarPresupuesto()">
   <div class="pres-modal">
-    <div id="pres-capture"></div>
     <div class="pres-modal-actions">
-      <input type="text" id="pres-cliente" class="desc-input" placeholder="Nombre del cliente (para registrar)..." style="margin-bottom:0;">
-      <input type="text" id="pres-desc-input" class="desc-input" placeholder="Descripción adicional (opcional)..." style="margin-bottom:0;">
-      <p id="pres-desc-text" style="font-size:12px;color:var(--magenta);font-weight:600;margin:0;mi
+      <input type="text" id="pres-cliente" class="desc-input" placeholder="Nombre del cliente (para registrar)..." style="margin:0;">
+      <input type="text" id="pres-desc-input" class="desc-input" placeholder="Descripción del pedido (opcional)..." style="margin:0;">
+      <div class="pres-modal-btns">
+        <button class="pres-action-btn secondary" onclick="cerrarPresupuesto()">
+          <i class="ti ti-x"></i> Cerrar
+        </button>
+        <button class="pres-action-btn" id="pres-reg-btn" onclick="registrarPresupuesto()" style="background:linear-gradient(135deg,#457b9d,#1d3557);color:#fff;box-shadow:0 3px 12px rgba(69,123,157,.3);flex:1;">
+          <i class="ti ti-database-plus"></i> Registrar
+        </button>
+        <button class="pres-action-btn primary" onclick="window.print()">
+          <i class="ti ti-camera"></i> Capturar
+        </button>
+      </div>
+    </div>
+    <div id="pres-capture"></div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
