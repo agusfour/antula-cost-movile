@@ -452,6 +452,7 @@
 .eg-pill-1{background:#faeeda;color:#854f0b;}
 .eg-pill-2{background:#fef3c7;color:#92400e;}
 .eg-pill-3{background:#e1f5ee;color:#0f6e56;}
+.eg-pill-4{background:#ede9fe;color:#5b21b6;}
 .home-tile-desc{font-size:11px;color:var(--muted);margin-top:3px;}
 .tile-gv .tile-ico{background:linear-gradient(135deg,#3b1c6b,#6930c3);box-shadow:0 6px 16px rgba(59,28,107,.35);}
 .tile-eg .tile-ico{background:linear-gradient(135deg,#c21d8f,#8b0a5e);box-shadow:0 6px 16px rgba(194,29,143,.35);}
@@ -1190,7 +1191,7 @@
             <i class="ti ti-plus"></i> Registrar
           </button>
           <button class="ot-tab" id="eg-tab-hist" onclick="egSwitchTab('hist')">
-            <i class="ti ti-list"></i> Últimos 7 días
+            <i class="ti ti-list"></i> Último mes
           </button>
         </div>
 
@@ -1213,6 +1214,7 @@
                   <div class="eg-dd-opt" onclick="egElegir(1)"><i class="ti ti-bolt" style="color:#e76f51;"></i><i class="ti ti-truck-delivery" style="color:#e76f51;font-size:13px;margin-left:2px;"></i> Servicios y transportes</div>
                   <div class="eg-dd-opt" onclick="egElegir(2)"><i class="ti ti-tool" style="color:#e9c46a;"></i><i class="ti ti-scissors" style="color:#e9c46a;font-size:13px;margin-left:2px;"></i> Mantenimiento</div>
                   <div class="eg-dd-opt" onclick="egElegir(3)"><i class="ti ti-printer" style="color:#2a9d8f;"></i><i class="ti ti-pencil" style="color:#2a9d8f;font-size:13px;margin-left:2px;"></i> Inversiones</div>
+                  <div class="eg-dd-opt" onclick="egElegir(4)"><i class="ti ti-currency-dollar" style="color:#6930c3;"></i><i class="ti ti-wallet" style="color:#6930c3;font-size:13px;margin-left:2px;"></i> Retiros</div>
                 </div>
               </div>
             </div>
@@ -1251,7 +1253,7 @@
         <div id="eg-panel-hist" style="display:none;">
           <div style="display:flex;gap:10px;margin-bottom:12px;">
             <div class="gest-card" style="flex:1;padding:10px;text-align:center;">
-              <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">Total 7 días</div>
+              <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">Total 30 días</div>
               <div id="eg-sum-total" style="font-size:18px;font-weight:700;color:var(--magenta);margin-top:2px;">$0</div>
             </div>
             <div class="gest-card" style="flex:1;padding:10px;text-align:center;">
@@ -1268,7 +1270,7 @@
               <thead><tr><th>Fecha</th><th>Tipo</th><th>Descripción</th><th>Monto</th><th></th></tr></thead>
               <tbody id="eg-tbody"></tbody>
             </table>
-            <div id="eg-empty" class="gest-empty" style="display:none;"><i class="ti ti-inbox"></i> Sin egresos en los últimos 7 días</div>
+            <div id="eg-empty" class="gest-empty" style="display:none;"><i class="ti ti-inbox"></i> Sin egresos en los últimos 30 días</div>
           </div>
         </div>
 
@@ -3025,13 +3027,14 @@ function gestInit(){
 }
 
 var _egTipoSel=-1;
-var _egTipos=['Mercadería','Servicios y transportes','Mantenimiento','Inversiones'];
-var _egPills=['eg-pill-0','eg-pill-1','eg-pill-2','eg-pill-3'];
+var _egTipos=['Mercadería','Servicios y transportes','Mantenimiento','Inversiones','Retiros'];
+var _egPills=['eg-pill-0','eg-pill-1','eg-pill-2','eg-pill-3','eg-pill-4'];
 var _egIcos=[
   '<i class="ti ti-box" style="color:#457b9d;"></i><i class="ti ti-shirt" style="color:#457b9d;font-size:12px;margin-left:2px;"></i>',
   '<i class="ti ti-bolt" style="color:#e76f51;"></i><i class="ti ti-truck-delivery" style="color:#e76f51;font-size:12px;margin-left:2px;"></i>',
   '<i class="ti ti-tool" style="color:#e9c46a;"></i><i class="ti ti-scissors" style="color:#e9c46a;font-size:12px;margin-left:2px;"></i>',
-  '<i class="ti ti-printer" style="color:#2a9d8f;"></i><i class="ti ti-pencil" style="color:#2a9d8f;font-size:12px;margin-left:2px;"></i>'
+  '<i class="ti ti-printer" style="color:#2a9d8f;"></i><i class="ti ti-pencil" style="color:#2a9d8f;font-size:12px;margin-left:2px;"></i>',
+  '<i class="ti ti-currency-dollar" style="color:#6930c3;"></i><i class="ti ti-wallet" style="color:#6930c3;font-size:12px;margin-left:2px;"></i>'
 ];
 
 function egInit(){
@@ -3139,7 +3142,7 @@ function egMostrarHist(data){
   var utcMs=hoy.getTime()+hoy.getTimezoneOffset()*60000;
   var ar=new Date(utcMs-3*3600000);
   ar.setHours(0,0,0,0);
-  var hace7=new Date(ar.getTime()-6*24*3600000);
+  var hace7=new Date(ar.getTime()-29*24*3600000);
 
   var recientes=data.filter(function(e){
     var raw=String(e.fecha);
@@ -3153,7 +3156,10 @@ function egMostrarHist(data){
     if(isNaN(d.getTime())) return false;
     return d>=hace7;
   });
-  recientes.sort(function(a,b){return String(b.fecha).localeCompare(String(a.fecha));});
+  recientes.sort(function(a,b){
+    function toTs(f){var p=String(f).split('/');return p.length>=3?new Date(p[2],p[1]-1,p[0]).getTime():0;}
+    return toTs(b.fecha)-toTs(a.fecha);
+  });
 
   var total=recientes.reduce(function(s,e){return s+(parseFloat(e.monto)||0);},0);
   document.getElementById('eg-sum-total').textContent=fmt(total);
@@ -3167,7 +3173,7 @@ function egMostrarHist(data){
     return;
   }
   empty.style.display='none';
-  var tiposLabel=['Mercadería','Servicios y transp.','Mantenimiento','Inversiones'];
+  var tiposLabel=['Mercadería','Servicios y transp.','Mantenimiento','Inversiones','Retiros'];
   tbody.innerHTML=recientes.map(function(e){
     var tipoIdx=_egTipos.indexOf(e.tipo);
     var pillCls=tipoIdx>=0?_egPills[tipoIdx]:'eg-pill-0';
