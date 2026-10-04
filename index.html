@@ -2,6 +2,7 @@
 <h2 class="sr-only" style="position:absolute;left:-9999px;">Antula Estudio — Calculadora de costos</h2>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.6.0/dist/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 
@@ -69,6 +70,7 @@
 .gest-badge.vencido{background:rgba(194,29,143,.1);color:var(--magenta);}
 .gest-badge.pagado{background:rgba(59,28,107,.1);color:var(--purple);}
 .gest-badge.seniado{background:rgba(240,128,45,.12);color:var(--orange-d);}
+.gest-badge.cancelada{background:rgba(100,100,100,.1);color:#666;}
 .gest-card-meta{font-size:12px;color:var(--muted);margin-bottom:7px;line-height:1.4;}
 .gest-card-total{font-family:var(--display);font-size:18px;font-weight:700;color:var(--purple);}
 .gest-card-btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
@@ -262,6 +264,13 @@
 .pres-contact-item i{font-size:16px;color:var(--magenta);}
 .pres-wa-icon{width:18px;height:18px;flex-shrink:0;}
 .pres-note{text-align:center;margin-top:14px;font-size:11px;font-weight:700;color:#2c2233;letter-spacing:.02em;}
+.pf-override{display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);gap:8px;flex-wrap:wrap;}
+.pf-calc-hint{font-size:11px;color:var(--muted);white-space:nowrap;}
+.pf-calc-hint b{color:var(--ink);}
+.pf-lbl{font-size:12px;font-weight:600;color:var(--purple);white-space:nowrap;}
+.pres-alias{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;font-size:11px;color:#5c5266;font-weight:500;}
+.pres-alias-bank{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#EC0000;}
+.pres-alias strong{color:#2c2233;font-weight:700;}
 
 /* ===== Papelería: ítems del pedido ===== */
 #pc-items{display:flex;flex-direction:column;gap:12px;}
@@ -456,6 +465,110 @@
 .home-tile-desc{font-size:11px;color:var(--muted);margin-top:3px;}
 .tile-gv .tile-ico{background:linear-gradient(135deg,#3b1c6b,#6930c3);box-shadow:0 6px 16px rgba(59,28,107,.35);}
 .tile-eg .tile-ico{background:linear-gradient(135deg,#c21d8f,#8b0a5e);box-shadow:0 6px 16px rgba(194,29,143,.35);}
+.tile-bal .tile-ico{background:linear-gradient(135deg,#0d9488,#0f766e);box-shadow:0 6px 16px rgba(13,148,136,.35);}
+.tile-prec .tile-ico{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 6px 16px rgba(245,158,11,.35);}
+
+/* ===== PRECIARIO ===== */
+.prec-costo-row{display:grid;grid-template-columns:1fr 110px 34px;gap:6px;align-items:center;margin-bottom:8px;}
+.prec-costo-row:last-child{margin-bottom:0;}
+.prec-costo-nombre{width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--ink);outline:none;font-family:var(--font);}
+.prec-costo-nombre:focus{border-color:var(--orange);}
+.prec-costo-monto{width:100%;box-sizing:border-box;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:9px 10px 9px 22px;font-size:13px;color:var(--ink);outline:none;font-family:var(--font);text-align:right;}
+.prec-costo-monto:focus{border-color:var(--orange);}
+.prec-costo-wrap{position:relative;}
+.prec-costo-sign{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none;}
+.prec-empty-costos{color:var(--muted);font-size:12px;padding:10px 0;text-align:center;font-style:italic;}
+
+/* Preciario — vista detalle/captura */
+.prec-capture{background:var(--paper);border-radius:12px;padding:1.25rem;}
+.prec-capture-brand{font-family:var(--display);font-size:13px;font-weight:700;color:var(--magenta);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px;}
+.prec-capture-sub{font-size:11px;color:var(--muted);margin-bottom:14px;}
+.prec-capture-nombre{font-family:var(--display);font-size:18px;font-weight:700;color:var(--purple);margin-bottom:12px;line-height:1.2;}
+.prec-capture-divider{border:none;border-top:1px solid var(--line);margin:10px 0;}
+.prec-capture-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;}
+.prec-capture-row.total{font-weight:700;font-size:14px;border-top:1px solid var(--line);padding-top:10px;margin-top:4px;}
+.prec-capture-row.precio{font-family:var(--display);font-size:16px;font-weight:700;color:var(--purple);}
+.prec-capture-row.gan{color:#2a9d8f;font-weight:700;}
+.prec-capture-label{color:var(--muted);}
+.prec-capture-val{font-weight:600;color:var(--ink);}
+
+/* Preciario picker */
+.prec-picker-overlay{position:fixed;inset:0;background:rgba(44,34,51,.55);z-index:1002;display:flex;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(3px);}
+.prec-picker-overlay.hidden{display:none;}
+.prec-picker-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:540px;max-height:78vh;display:flex;flex-direction:column;box-shadow:0 -8px 32px rgba(44,34,51,.15);}
+.prec-picker-header{padding:1rem 1.25rem .75rem;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.prec-picker-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--purple);}
+.prec-picker-list{overflow-y:auto;flex:1;padding:.75rem 1rem 1.25rem;}
+.prec-picker-item{background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:.85rem 1rem;margin-bottom:8px;cursor:pointer;transition:border-color .15s,box-shadow .15s;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.prec-picker-item:hover{border-color:#f59e0b;box-shadow:0 3px 12px rgba(245,158,11,.15);}
+.prec-picker-item:last-child{margin-bottom:0;}
+.prec-picker-name{font-size:13px;font-weight:700;color:var(--ink);}
+.prec-picker-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.prec-picker-price{font-family:var(--display);font-size:15px;font-weight:700;color:var(--purple);flex-shrink:0;}
+.prec-picker-empty{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:13px;}
+
+/* Op-item preciario sourced */
+.op-item-prec .pc-item-head{margin-bottom:6px;}
+.op-item-prec .op-prec-badge{font-size:10px;font-weight:700;background:rgba(245,158,11,.12);color:#d97706;border:1px solid rgba(245,158,11,.3);border-radius:20px;padding:2px 8px;letter-spacing:.04em;text-transform:uppercase;}
+
+@media print {
+  .prec-no-print{display:none!important;}
+  body>*:not(#prec-detail-overlay){display:none!important;}
+  #prec-detail-overlay{position:static!important;background:none!important;padding:0!important;}
+  .pres-modal{box-shadow:none!important;border-radius:0!important;max-width:100%!important;}
+}
+
+/* ===== BALANCES ===== */
+.bal-period-tabs{display:flex;gap:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.bal-period-tab{flex:1;padding:9px 6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;text-align:center;border:none;background:none;font-family:var(--font);transition:background .2s,color .2s;}
+.bal-period-tab.active{background:linear-gradient(135deg,var(--magenta),#8d166a);color:#fff;}
+.bal-custom-picker{display:none;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;gap:8px;align-items:center;flex-wrap:wrap;}
+.bal-custom-picker label{font-size:11px;color:var(--muted);font-weight:500;}
+.bal-custom-picker select{font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:7px;background:var(--cream2);color:var(--ink);font-family:var(--font);}
+.bal-apply-btn{padding:6px 12px;background:linear-gradient(135deg,var(--magenta),#8d166a);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);}
+.bal-loading{text-align:center;padding:2rem;color:var(--muted);font-size:13px;}
+.bal-refresh-btn{border:1px solid var(--line);background:var(--paper);border-radius:9px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:5px;transition:all .15s;}
+.bal-refresh-btn:hover{border-color:var(--orange);color:var(--orange);}
+.bal-period-label{font-family:var(--display);font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;}
+.bal-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.bal-kcard{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;box-shadow:0 2px 10px rgba(59,28,107,.04);}
+.bal-kcard.full{grid-column:1/-1;}
+.bal-kcard-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.bal-kcard-val{font-family:var(--display);font-size:22px;font-weight:700;line-height:1.1;}
+.bal-kcard-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.bal-c-green{color:#2a9d8f;}.bal-c-red{color:#c1440e;}.bal-c-orange{color:var(--orange-d);}.bal-c-purple{color:var(--purple);}.bal-c-magenta{color:var(--magenta);}
+.bal-precio-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;box-shadow:0 2px 10px rgba(59,28,107,.04);}
+.bal-precio-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+.bal-precio-title{font-size:12px;font-weight:600;color:var(--ink);}
+.bal-sem{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.bal-sem.verde{background:#2a9d8f;box-shadow:0 0 0 3px rgba(42,157,143,.2);}
+.bal-sem.rojo{background:#c1440e;box-shadow:0 0 0 3px rgba(193,68,14,.2);}
+.bal-sem.amarillo{background:var(--orange-d);box-shadow:0 0 0 3px rgba(217,106,28,.2);}
+.bal-precio-vals{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.55rem;}
+.bal-precio-item-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.bal-precio-item-val{font-family:var(--display);font-size:16px;font-weight:700;}
+.bal-precio-track{background:var(--cream2);border-radius:4px;height:6px;overflow:hidden;position:relative;}
+.bal-precio-bar{position:absolute;top:0;height:100%;border-radius:4px;}
+.bal-precio-note{font-size:11px;color:var(--muted);margin-top:.5rem;line-height:1.5;}
+.bal-bar-row{margin-bottom:.6rem;}
+.bal-bar-meta{display:flex;justify-content:space-between;margin-bottom:3px;}
+.bal-bar-cat{font-size:12px;color:var(--ink);}
+.bal-bar-val{font-size:12px;font-weight:600;color:var(--ink);}
+.bal-bar-pct{font-size:10px;color:var(--muted);margin-left:3px;}
+.bal-bar-track{background:var(--cream2);border-radius:99px;height:7px;overflow:hidden;border:1px solid var(--line);}
+.bal-bar-fill{height:100%;border-radius:99px;transition:width .5s ease;}
+.bal-top-row{display:flex;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--cream);gap:8px;}
+.bal-top-row:last-child{border-bottom:none;}
+.bal-top-rank{font-size:11px;font-weight:700;color:var(--line);width:16px;flex-shrink:0;}
+.bal-top-info{flex:1;min-width:0;}
+.bal-top-name{font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bal-top-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.bal-top-val{font-family:var(--display);font-size:13px;font-weight:700;flex-shrink:0;}
+
+.search-bar{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 12px 8px 34px;font-size:13px;font-family:var(--font);color:var(--ink);outline:none;min-width:0;transition:border-color .2s;}
+.search-bar:focus{border-color:var(--magenta);box-shadow:0 0 0 3px rgba(194,29,143,.08);}
+.search-wrap{position:relative;flex:1;min-width:0;}
+.search-wrap .search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none;}
 </style>
 
 <div class="wrap">
@@ -551,9 +664,14 @@
           <div class="tile-desc">Calculá costos y precios</div>
         </div>
         <div class="tile tile-6" onclick="showView('gestion')">
-          <div class="tile-ico"><i class="ti ti-chart-bar"></i></div>
+          <div class="tile-ico"><i class="ti ti-shopping-bag"></i></div>
           <div class="tile-name">Gestión</div>
           <div class="tile-desc">Presupuestos y ventas</div>
+        </div>
+        <div class="tile tile-bal" onclick="showView('balances')" style="grid-column:1/-1;">
+          <div class="tile-ico"><i class="ti ti-chart-bar"></i></div>
+          <div class="tile-name">Balances</div>
+          <div class="tile-desc">Resumen del negocio por período</div>
         </div>
       </div>
     </div>
@@ -1084,6 +1202,11 @@
           <div class="tile-name">Egresos</div>
           <div class="tile-desc">Registro de gastos</div>
         </div>
+        <div class="tile tile-prec" onclick="showView('preciario')" style="grid-column:1/-1;">
+          <div class="tile-ico"><i class="ti ti-file-dollar"></i></div>
+          <div class="tile-name">Gestión de Preciario</div>
+          <div class="tile-desc">Crear y editar presupuestos precalculados</div>
+        </div>
       </div>
     </div>
 
@@ -1100,36 +1223,90 @@
 
       <!-- Panel Presupuestos -->
       <div id="gest-panel-pres">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <button class="gest-filter pf active" data-filter="Todos" onclick="gestSetFilter('Todos')">Todos</button>
             <button class="gest-filter pf" data-filter="Pendiente" onclick="gestSetFilter('Pendiente')">Pendientes</button>
             <button class="gest-filter pf" data-filter="Confirmado" onclick="gestSetFilter('Confirmado')">Confirmados</button>
             <button class="gest-filter pf" data-filter="Vencido" onclick="gestSetFilter('Vencido')">Vencidos</button>
           </div>
-          <button class="clear-btn" onclick="gestRefreshPres()"><i class="ti ti-refresh"></i> Actualizar</button>
+          <button class="clear-btn" onclick="gestRefreshPres()"><i class="ti ti-refresh"></i></button>
         </div>
-        <div id="gest-pres-list" style="margin-top:12px;"></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <div class="search-wrap">
+            <i class="ti ti-search search-ico"></i>
+            <input type="text" class="search-bar" id="pres-search" placeholder="Buscar cliente, descripción..." oninput="gestSearchPres()">
+          </div>
+        </div>
+        <div id="gest-pres-list" style="margin-top:8px;"></div>
       </div>
 
       <!-- Panel Ventas -->
       <div id="gest-panel-vent" style="display:none;">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <button class="gest-filter active" id="vf-todos" onclick="gestSetVentFilter('Todos')">Todos</button>
             <button class="gest-filter" id="vf-saldo" onclick="gestSetVentFilter('Con saldo')">Con saldo</button>
             <button class="gest-filter" id="vf-pagado" onclick="gestSetVentFilter('Pagado')">Pagadas</button>
+            <button class="gest-filter" id="vf-cancelada" onclick="gestSetVentFilter('Cancelada')">Canceladas</button>
           </div>
-          <button class="clear-btn" onclick="gestRefreshVentas()"><i class="ti ti-refresh"></i> Actualizar</button>
+          <button class="clear-btn" onclick="gestRefreshVentas()"><i class="ti ti-refresh"></i></button>
         </div>
-        <div id="gest-vent-list" style="margin-top:12px;"></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <div class="search-wrap">
+            <i class="ti ti-search search-ico"></i>
+            <input type="text" class="search-bar" id="vent-search" placeholder="Buscar cliente, descripción..." oninput="gestSearchVentas()">
+          </div>
+        </div>
+        <div id="gest-vent-list" style="margin-top:8px;"></div>
+      </div>
+
+      <!-- Mini-modal: Editar Presupuesto -->
+      <div class="gest-mini-modal hidden" id="gest-edit-modal">
+        <div class="gest-mini-box" style="max-width:380px;max-height:88vh;overflow-y:auto;">
+          <p class="sec-title" style="margin-bottom:4px;"><i class="ti ti-pencil"></i> Editar Presupuesto</p>
+          <p id="gest-edit-categoria" style="font-size:11px;color:var(--muted);margin:0 0 12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;"></p>
+          <div class="field-row" style="margin-bottom:8px;">
+            <span class="field-label">Cliente</span>
+            <input type="text" id="gest-edit-cliente" class="a-input" placeholder="Nombre del cliente" style="flex:1;">
+          </div>
+          <div class="field-row" style="margin-bottom:12px;">
+            <span class="field-label">Descripción</span>
+            <input type="text" id="gest-edit-desc" class="a-input" placeholder="Descripción (opcional)" style="flex:1;">
+          </div>
+          <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;">Ítems</div>
+          <div style="font-size:10px;color:var(--muted);display:grid;grid-template-columns:1fr 44px 76px 62px 22px;gap:4px;margin-bottom:4px;padding:0 2px;">
+            <span>Descripción</span><span style="text-align:center;">Cant.</span><span style="text-align:right;">Precio/u</span><span style="text-align:right;">Subtotal</span><span></span>
+          </div>
+          <div id="gest-edit-items"></div>
+          <div style="border-top:1px solid var(--line);margin-top:10px;padding-top:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+              <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">Total de venta</span>
+              <span id="gest-edit-total" style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--magenta);">$0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+              <span style="font-size:11px;color:var(--muted);font-weight:600;">Costo materiales</span>
+              <span id="gest-edit-costo" style="font-size:13px;font-weight:700;color:var(--ink);">$0</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:4px;">
+            <button class="pres-action-btn secondary" style="flex:1;" onclick="gestCloseEdit()">Cancelar</button>
+            <button class="pres-action-btn primary" style="flex:1;" id="gest-edit-save-btn" onclick="gestDoEdit()"><i class="ti ti-device-floppy"></i> Guardar</button>
+          </div>
+        </div>
       </div>
 
       <!-- Mini-modal: Confirmar Venta -->
       <div class="gest-mini-modal hidden" id="gest-confirm-modal">
         <div class="gest-mini-box">
-          <p class="sec-title" style="margin-bottom:8px;"><i class="ti ti-check"></i> Confirmar Venta</p>
-          <p id="gest-confirm-info" style="font-size:13px;color:var(--muted);margin:0 0 14px;font-weight:500;"></p>
+          <p class="sec-title" style="margin-bottom:4px;"><i class="ti ti-check"></i> Confirmar Venta</p>
+          <p id="gest-confirm-info" style="font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:500;"></p>
+          <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Ítems del pedido</div>
+          <div id="gest-confirm-items" style="margin-bottom:10px;"></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:12px;">
+            <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">Total</span>
+            <span id="gest-confirm-total" style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--magenta);">$0</span>
+          </div>
           <div class="field-row">
             <span class="field-label">Se&#241;a recibida</span>
             <div style="display:flex;align-items:center;gap:5px;">
@@ -1264,10 +1441,14 @@
               <i class="ti ti-refresh" id="eg-refresh-ico"></i>
             </button>
           </div>
+          <div class="search-wrap" style="margin-bottom:8px;">
+            <i class="ti ti-search search-ico"></i>
+            <input type="text" class="search-bar" id="eg-search" placeholder="Buscar descripción, tipo, proveedor..." oninput="egSearch()">
+          </div>
           <div class="gest-card" style="padding:12px;overflow-x:auto;">
             <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Egresos recientes</div>
             <table class="eg-table">
-              <thead><tr><th>Fecha</th><th>Tipo</th><th>Descripción</th><th>Monto</th><th></th></tr></thead>
+              <thead><tr><th>Fecha</th><th>Tipo</th><th>Descripción</th><th>Proveedor</th><th>Monto</th><th></th></tr></thead>
               <tbody id="eg-tbody"></tbody>
             </table>
             <div id="eg-empty" class="gest-empty" style="display:none;"><i class="ti ti-inbox"></i> Sin egresos en los últimos 30 días</div>
@@ -1277,6 +1458,41 @@
       </div>
     </div><!-- /view-gestion -->
 
+    <!-- ===================== BALANCES ===================== -->
+    <div class="view" id="view-balances">
+      <div class="bal-period-tabs">
+        <button class="bal-period-tab" data-period="mes" onclick="balSetPeriod('mes')">Este mes</button>
+        <button class="bal-period-tab active" data-period="mes-ant" onclick="balSetPeriod('mes-ant')">Mes anterior</button>
+        <button class="bal-period-tab" data-period="personalizado" onclick="balSetPeriod('personalizado')">Personalizado</button>
+      </div>
+      <div class="bal-custom-picker" id="bal-custom-picker">
+        <label>De</label>
+        <select id="bal-from-month"></select>
+        <label>a</label>
+        <select id="bal-to-month"></select>
+        <button class="bal-apply-btn" onclick="balApplyCustom()">Ver</button>
+      </div>
+      <div id="bal-content">
+        <div class="bal-loading"><i class="ti ti-loader"></i> Cargando...</div>
+      </div>
+      <div style="display:flex;justify-content:center;padding-bottom:.5rem;">
+        <button class="bal-refresh-btn" onclick="balRefresh()"><i class="ti ti-refresh"></i> Actualizar datos</button>
+      </div>
+    </div><!-- /view-balances -->
+
+    <!-- ===================== PRECIARIO ===================== -->
+    <div class="view" id="view-preciario">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+        <div class="sec-title" style="margin:0;"><i class="ti ti-file-dollar"></i> Preciario</div>
+        <div style="display:flex;gap:8px;">
+          <button class="gest-btn" style="background:rgba(245,158,11,.08);color:#d97706;border:1px solid rgba(245,158,11,.2);padding:8px 10px;" onclick="precRefresh()"><i class="ti ti-refresh" id="prec-refresh-ico"></i></button>
+          <button class="gest-btn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;" onclick="precNuevo()"><i class="ti ti-plus"></i> Nuevo</button>
+        </div>
+      </div>
+      <div id="prec-list">
+        <div class="gest-loading"><i class="ti ti-loader"></i> Cargando...</div>
+      </div>
+    </div><!-- /view-preciario -->
 
 
 
@@ -1297,6 +1513,8 @@ const VIEWS={
   'gestion-ventas':{sub:"Gestión",name:"Presupuestos y ventas"},
   egresos:{sub:"Egresos",name:"Registro de gastos"},
   cortecalc:{sub:"Presupuestos",name:"Calculadora de Corte"},
+  balances:{sub:"Inicio",name:"Balances"},
+  preciario:{sub:"Gestión",name:"Gestión de Preciario"},
 };
 var _navStack=[];
 var _navCurrent='home';
@@ -1335,6 +1553,8 @@ function _applyView(name){
   if(name==='gestion-ventas'){gestInit();}
   if(name==='egresos'){egInit();}
   if(name==='cortecalc'){ccInit();}
+  if(name==='balances'){balInit();}
+  if(name==='preciario'){precInit();}
 }
 
 /* ============ CALCULADORA DE CORTE ============ */
@@ -1428,18 +1648,24 @@ function getMargen(){return (parseFloat(document.getElementById('p-margen').valu
 function getHoraDise(){return parseFloat(document.getElementById('p-hora-diseno').value)||0;}
 function getHoraEst(){return parseFloat(document.getElementById('p-hora-estampado').value)||0;}
 function getStampPrices(){const dtf=getDtf();return STAMPS_BASE.map(s=>({...s,price:Math.round(s.metros*dtf)}));}
-function stampOptions(){return getStampPrices().map(s=>`<option value="${s.price}">${s.name} (${fmt(s.price)})</option>`).join('');}
+function stampOptions(){
+  const dtf=getDtf();
+  return getStampPrices().map(s=>`<option value="${s.price}">${s.name} (${fmt(s.price)})</option>`).join('')
+    +`<option value="__dtf__">DTF por metro (${fmt(dtf)}/m)</option>`;
+}
 function renderStampPreview(){
   const stamps=getStampPrices();
   document.getElementById('stamp-preview-body').innerHTML=stamps.map(s=>`<tr><td>${s.name}</td><td>${s.metros.toFixed(4)}m</td><td>${fmt(s.price)}</td></tr>`).join('');
 }
 function buildStampSelects(){
   const stamps=getStampPrices();
+  const dtf=getDtf();
   document.querySelectorAll('#est-items .stamp-row').forEach(row=>{
     const sel=row.querySelector('select');if(!sel)return;
-    const prevIdx=sel.selectedIndex>=0?sel.selectedIndex:0;
-    sel.innerHTML=stamps.map(s=>`<option value="${s.price}">${s.name} (${fmt(s.price)})</option>`).join('');
-    sel.selectedIndex=Math.min(prevIdx,stamps.length-1);
+    const prevVal=sel.value;
+    sel.innerHTML=stamps.map(s=>`<option value="${s.price}">${s.name} (${fmt(s.price)})</option>`).join('')
+      +`<option value="__dtf__">DTF por metro (${fmt(dtf)}/m)</option>`;
+    if(prevVal) sel.value=prevVal;
   });
 }
 function estAddItem(){
@@ -1459,7 +1685,7 @@ function estAddItem(){
     <p class="est-sub-title">Estampas (por unidad)</p>
     <div class="est-stamps"></div>
     <button class="add-btn" onclick="estAddStamp(this)"><i class="ti ti-plus"></i> Agregar estampa</button>
-    <p class="est-sub-title" style="margin-top:10px;">Mano de obra (por unidad)</p>
+    <p class="est-sub-title" style="margin-top:10px;">Mano de obra (a pedido completo)</p>
     <div class="field-row"><span class="field-label">Horas de diseño</span>
       <div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 est-hs-diseno" value="0" min="0" step="0.5" oninput="calcular()"><span class="field-unit">hs</span></div></div>
     <div class="field-row"><span class="field-label">Horas de estampado</span>
@@ -1468,6 +1694,10 @@ function estAddItem(){
       <div class="chip"><b class="est-sub">$0</b><small>Costo de Materiales</small></div>
       <div class="chip"><b class="est-ganancia">$0</b><small>Ganancia</small></div>
       <div class="chip"><b class="est-unit-price">$0</b><small>Precio unitario</small></div>
+    </div>
+    <div class="pf-override">
+      <span class="pf-calc-hint">Calculado: <b class="est-precio-calc">$0</b>/u</span>
+      <div style="display:flex;align-items:center;gap:5px;"><span class="pf-lbl">Redondear a $</span><input type="number" class="a-input w90 est-precio-final" placeholder="auto" min="0" step="100" oninput="calcular()"></div>
     </div>`;
   c.appendChild(div);
   estRenumber();
@@ -1485,12 +1715,24 @@ function estRenumber(){
 function estAddStamp(btn){
   const cont=btn.closest('.est-item').querySelector('.est-stamps');
   const row=document.createElement('div');row.className='stamp-row';
-  row.innerHTML=`<select class="a-select" onchange="calcular()">${stampOptions()}</select>
-    <input class="a-input w60" type="number" value="1" min="1" max="99" oninput="calcular()" style="text-align:center;">
+  row.innerHTML=`<select class="a-select" onchange="estOnStampChange(this)">${stampOptions()}</select>
+    <input class="a-input w60" type="number" value="1" min="1" max="99" oninput="calcular()" style="text-align:center;" title="Cantidad">
     <button class="remove-btn" onclick="removeStamp(this)" aria-label="Eliminar estampa"><i class="ti ti-x"></i></button>`;
   cont.appendChild(row);calcular();
 }
 function removeStamp(btn){btn.closest('.stamp-row').remove();calcular();}
+function estOnStampChange(sel){
+  const row=sel.closest('.stamp-row');
+  const inp=row.querySelector('input[type=number]');
+  if(sel.value==='__dtf__'){
+    inp.step='0.05';inp.min='0.01';inp.placeholder='m';inp.title='Metros de DTF (ej: 0.30 = 30cm)';
+    if(parseFloat(inp.value)<0.01||inp.value==='1') inp.value='1';
+  } else {
+    inp.step='1';inp.min='1';inp.placeholder='';inp.title='Cantidad';
+    if(!Number.isInteger(parseFloat(inp.value))) inp.value=Math.max(1,Math.round(parseFloat(inp.value)));
+  }
+  calcular();
+}
 function onDtfChange(){renderStampPreview();buildStampSelects();calcular();flashSaved();}
 function onParamChange(){calcular();flashSaved();}
 function flashSaved(){const b=document.getElementById('save-badge');b.classList.add('show');clearTimeout(window._st);window._st=setTimeout(()=>b.classList.remove('show'),1500);}
@@ -1506,18 +1748,30 @@ function calcular(){
     const costoRopa=parseFloat(it.querySelector('.est-ropa').value)||0;
     let estUnit=0, nStamps=0;
     it.querySelectorAll('.est-stamps .stamp-row').forEach(row=>{
-      const sel=row.querySelector('select');const q=row.querySelector('input');
-      if(sel&&q){estUnit+=parseFloat(sel.value)*(parseFloat(q.value)||1);nStamps++;}
+      const sel=row.querySelector('select');const q=row.querySelector('input[type=number]');
+      if(!sel||!q)return;
+      if(sel.value==='__dtf__'){
+        estUnit+=(parseFloat(q.value)||0)*getDtf();
+      } else {
+        estUnit+=parseFloat(sel.value)*(parseFloat(q.value)||1);
+      }
+      nStamps++;
     });
     const qty=Math.max(1,parseInt(it.querySelector('.est-qty').value)||1);
     const hsDiseno=parseFloat(it.querySelector('.est-hs-diseno').value)||0;
     const hsEstampado=parseFloat(it.querySelector('.est-hs-estampado').value)||0;
     const matUnit=costoRopa+estUnit;
     const matUnitConMargen=matUnit*(1+margen);
-    const mdoUnit=hsDiseno*getHoraDise()+hsEstampado*getHoraEst();
-    const precioUnit=Math.round(matUnitConMargen+mdoUnit);
+    const mdoTotal=hsDiseno*getHoraDise()+hsEstampado*getHoraEst();
+    const totalCalc=Math.round(matUnitConMargen*qty+mdoTotal);
+    const precioUnitCalc=Math.round(totalCalc/qty);
+    const pfEl=it.querySelector('.est-precio-final');
+    const pfVal=pfEl&&pfEl.value.trim()!==''?(parseFloat(pfEl.value)||0):0;
+    const precioUnit=pfVal>0?pfVal:precioUnitCalc;
     const totalItem=precioUnit*qty;
-    const gananciaItem=(matUnit*margen+mdoUnit)*qty;
+    const gananciaItem=pfVal>0?(totalItem-matUnit*qty):(matUnit*margen*qty+mdoTotal);
+    const pfCalcEl=it.querySelector('.est-precio-calc');
+    if(pfCalcEl) pfCalcEl.textContent=fmt(precioUnitCalc);
     totalBase+=matUnit*qty;
     totalPedido+=totalItem;
     totalGanancia+=gananciaItem;
@@ -1642,7 +1896,7 @@ function pcAddItem(){
       <div class="field-row"><span class="field-label">Monto de compra (total)</span>
         <div style="display:flex;align-items:center;gap:5px;"><span class="field-unit">$</span><input type="number" class="a-input w90 pc-precio-libre" value="0" min="0" step="100" oninput="pcCalcular()"></div></div>
     </div>
-    <p class="est-sub-title" style="margin-top:10px;">Mano de obra (por unidad)</p>
+    <p class="est-sub-title" style="margin-top:10px;">Mano de obra (a pedido completo)</p>
     <div class="field-row"><span class="field-label">Horas de diseño</span>
       <div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 pc-hs-diseno" value="0" min="0" step="0.5" oninput="pcCalcular()"><span class="field-unit">hs</span></div></div>
     <div class="field-row"><span class="field-label">Horas de corte</span>
@@ -1651,6 +1905,10 @@ function pcAddItem(){
       <div class="chip"><b class="pc-ppp">0</b><small class="pc-ppp-lbl">Cortes / hoja</small></div>
       <div class="chip"><b class="pc-hojas">0</b><small class="pc-hojas-lbl">Hojas</small></div>
       <div class="chip"><b class="pc-unit-price">$0</b><small>Total ítem</small></div>
+    </div>
+    <div class="pf-override">
+      <span class="pf-calc-hint">Calculado: <b class="pc-precio-calc">$0</b></span>
+      <div style="display:flex;align-items:center;gap:5px;"><span class="pf-lbl">Redondear a $</span><input type="number" class="a-input w90 pc-precio-final" placeholder="auto" min="0" step="100" oninput="pcCalcular()"></div>
     </div>
     <div class="layout-wrap pc-layout"></div>
     <button class="add-btn" onclick="pcAddOtros(this)" style="margin-top:8px;"><i class="ti ti-plus"></i> Agregar costo adicional</button>
@@ -1815,8 +2073,13 @@ function pcCalcular(){
     }
     // Sumar costos adicionales ingresados manualmente
     it.querySelectorAll('.pc-otros-costo').forEach(inp=>{costoMat+=parseFloat(inp.value)||0;});
-    const totalItem=Math.round(costoMat*(1+margen)+mdoTotal);
-    const gananciaItem=costoMat*margen+mdoTotal;
+    const totalCalc=Math.round(costoMat*(1+margen)+mdoTotal);
+    const pfEl=it.querySelector('.pc-precio-final');
+    const pfVal=pfEl&&pfEl.value.trim()!==''?(parseFloat(pfEl.value)||0):0;
+    const totalItem=pfVal>0?pfVal:totalCalc;
+    const gananciaItem=pfVal>0?(totalItem-costoMat):(costoMat*margen+mdoTotal);
+    const pfCalcEl=it.querySelector('.pc-precio-calc');
+    if(pfCalcEl) pfCalcEl.textContent=fmt(totalCalc);
     totalBase+=costoMat; totalPedido+=totalItem; totalGanancia+=gananciaItem; totalPiezas+=qty;
     it.querySelector('.pc-sheet').textContent=sheetLabel;
     it.querySelector('.pc-unit-price').textContent=fmt(totalItem);
@@ -1876,10 +2139,30 @@ function generarPresupuesto(){
         </div>
       </div>
       <p class="pres-note">Los pedidos son reservados con una seña del 50%</p>
+      <div class="pres-alias"><span>Alias: <strong>antula.estudio2025</strong></span><span class="pres-alias-bank"><svg width="11" height="13" viewBox="0 0 11 13" fill="#EC0000"><path d="M5.5 0C3.8 2.5 1 3.5 1 6.5a4.5 4.5 0 009 0C10 3.5 7.2 2.5 5.5 0z"/></svg>Santander</span></div>
     </div>`;
   window._lastPresupuesto={categoria:'Estampados',descripcion:'',items:items,total:total,costoMat:window._presBase||0,ganancia:window._presGanancia||0};
   document.getElementById('pres-overlay').classList.remove('hidden');
 }
+function presCompartir(captureId){
+  var el=document.getElementById(captureId);
+  if(!el){alert('No se encontró el presupuesto.');return;}
+  if(typeof html2canvas==='undefined'){alert('Cargando... intentá en un momento.');return;}
+  html2canvas(el,{scale:2,backgroundColor:'#ffffff',useCORS:false,logging:false}).then(function(canvas){
+    canvas.toBlob(function(blob){
+      var file=new File([blob],'presupuesto-antula.png',{type:'image/png'});
+      if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({files:[file],title:'Presupuesto Antula Estudio'}).catch(function(){});
+      } else {
+        // Fallback desktop: abre en nueva pestaña para hacer captura
+        var url=URL.createObjectURL(blob);
+        var win=window.open('','_blank');
+        win.document.write('<body style="margin:0;background:#f5f5f5;display:flex;justify-content:center;padding:20px;"><img src="'+url+'" style="max-width:500px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,.15);"></body>');
+      }
+    },'image/png');
+  });
+}
+
 function cerrarPresupuesto(){
   document.getElementById('pres-overlay').classList.add('hidden');
   var ci=document.getElementById('pres-cliente');if(ci)ci.value='';
@@ -1944,6 +2227,7 @@ function pcGenerarPresupuesto(){
         </div>
       </div>
       <p class="pres-note">Los pedidos son reservados con una seña del 50%</p>
+      <div class="pres-alias"><span>Alias: <strong>antula.estudio2025</strong></span><span class="pres-alias-bank"><svg width="11" height="13" viewBox="0 0 11 13" fill="#EC0000"><path d="M5.5 0C3.8 2.5 1 3.5 1 6.5a4.5 4.5 0 009 0C10 3.5 7.2 2.5 5.5 0z"/></svg>Santander</span></div>
     </div>`;
   window._lastPresupuesto={categoria:'Papelería Comercial',descripcion:'',items:items,total:total,costoMat:window._presBase||0,ganancia:window._presGanancia||0};
   document.getElementById('pres-overlay').classList.remove('hidden');
@@ -2025,14 +2309,18 @@ function paAddItem(){
     +'<p class="est-sub-title">Materiales (para el pedido completo)</p>'
     +'<div class="pa-mats"></div>'
     +'<button class="add-btn" onclick="paAddMat(this)" style="margin-top:6px;"><i class="ti ti-plus"></i> Agregar material</button>'
-    +'<p class="est-sub-title" style="margin-top:10px;">Mano de obra (por unidad)</p>'
-    +'<div class="field-row"><span class="field-label">Horas de diseno</span>'
+    +'<p class="est-sub-title" style="margin-top:10px;">Mano de obra (a pedido completo)</p>'
+    +'<div class="field-row"><span class="field-label">Horas de diseño</span>'
     +'<div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 pa-hs-diseno" value="0" min="0" step="0.5" oninput="paCalcular()"><span class="field-unit">hs</span></div></div>'
     +'<div class="field-row"><span class="field-label">Horas de armado</span>'
     +'<div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 pa-hs-armado" value="0.5" min="0" step="0.5" oninput="paCalcular()"><span class="field-unit">hs</span></div></div>'
     +'<div class="calc-info">'
     +'<div class="chip"><b class="pa-mat-total">$0</b><small>Mat. pedido</small></div>'
-    +'<div class="chip"><b class="pa-unit-price">$0</b><small>Precio unitario</small></div>'
+    +'<div class="chip"><b class="pa-unit-price">$0</b><small>Total ítem</small></div>'
+    +'</div>'
+    +'<div class="pf-override">'
+    +'<span class="pf-calc-hint">Calculado: <b class="pa-precio-calc">$0</b></span>'
+    +'<div style="display:flex;align-items:center;gap:5px;"><span class="pf-lbl">Redondear a $</span><input type="number" class="a-input w90 pa-precio-final" placeholder="auto" min="0" step="100" oninput="paCalcular()"></div>'
     +'</div>';
   c.appendChild(div);
   paRenumber();
@@ -2098,8 +2386,13 @@ function paCalcular(){
     var hsDis=parseFloat(it.querySelector('.pa-hs-diseno').value)||0;
     var hsArm=parseFloat(it.querySelector('.pa-hs-armado').value)||0;
     var mdoTotal=hsDis*horaDis+hsArm*horaArm;
-    var totalItem=Math.round(costoMatTotal*(1+margen)+mdoTotal);
-    var gananciaItem=costoMatTotal*margen+mdoTotal;
+    var totalCalc=Math.round(costoMatTotal*(1+margen)+mdoTotal);
+    var pfEl=it.querySelector('.pa-precio-final');
+    var pfVal=pfEl&&pfEl.value.trim()!==''?(parseFloat(pfEl.value)||0):0;
+    var totalItem=pfVal>0?pfVal:totalCalc;
+    var gananciaItem=pfVal>0?(totalItem-costoMatTotal):(costoMatTotal*margen+mdoTotal);
+    var pfCalcEl=it.querySelector('.pa-precio-calc');
+    if(pfCalcEl) pfCalcEl.textContent=fmt(totalCalc);
     totalBase+=costoMatTotal; totalPedido+=totalItem; totalGanancia+=gananciaItem; totalUnidades+=qty;
     it.querySelector('.pa-mat-total').textContent=fmt(costoMatTotal);
     it.querySelector('.pa-unit-price').textContent=fmt(totalItem);
@@ -2145,6 +2438,7 @@ function paGenerarPresupuesto(){
     +'<div class="pres-contact-item">'+wa+' 3576477329</div>'
     +'</div>'
     +'<p class="pres-note">Los pedidos son reservados con una seña del 50%</p>'
+    +'<div class="pres-alias"><span>Alias: <strong>antula.estudio2025</strong></span><span class="pres-alias-bank"><svg width="11" height="13" viewBox="0 0 11 13" fill="#EC0000"><path d="M5.5 0C3.8 2.5 1 3.5 1 6.5a4.5 4.5 0 009 0C10 3.5 7.2 2.5 5.5 0z"/></svg>Santander</span></div>'
     +'</div>';
   window._lastPresupuesto={categoria:'Papelería Artística',descripcion:'',items:items,total:total,costoMat:window._presBase||0,ganancia:window._presGanancia||0};
   document.getElementById('pres-overlay').classList.remove('hidden');
@@ -2275,7 +2569,7 @@ function slAddItem(){
     +'<p class="est-sub-title">Materiales (para el pedido completo)</p>'
     +'<div class="sl-mats"></div>'
     +'<button class="add-btn" onclick="slAddMat(this)" style="margin-top:6px;"><i class="ti ti-plus"></i> Agregar material</button>'
-    +'<p class="est-sub-title" style="margin-top:10px;">Mano de obra (por unidad)</p>'
+    +'<p class="est-sub-title" style="margin-top:10px;">Mano de obra (a pedido completo)</p>'
     +'<div class="field-row"><span class="field-label">Horas de diseño</span>'
     +'<div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 sl-hs-diseno" value="0" min="0" step="0.5" oninput="slCalcular()"><span class="field-unit">hs</span></div></div>'
     +'<div class="field-row"><span class="field-label">Horas de producción</span>'
@@ -2283,6 +2577,10 @@ function slAddItem(){
     +'<div class="calc-info">'
     +'<div class="chip"><b class="sl-mat-total">$0</b><small>Mat. pedido</small></div>'
     +'<div class="chip"><b class="sl-unit-price">$0</b><small>Precio unitario</small></div>'
+    +'</div>'
+    +'<div class="pf-override">'
+    +'<span class="pf-calc-hint">Calculado: <b class="sl-precio-calc">$0</b>/u</span>'
+    +'<div style="display:flex;align-items:center;gap:5px;"><span class="pf-lbl">Redondear a $</span><input type="number" class="a-input w90 sl-precio-final" placeholder="auto" min="0" step="100" oninput="slCalcular()"></div>'
     +'</div>';
   c.appendChild(div);
   slRenumber(); slCalcular();
@@ -2336,11 +2634,17 @@ function slCalcular(){
     it.querySelectorAll('.sl-mat-row').forEach(function(row){costoMat+=slMatCost(row);});
     var hsDis=parseFloat(it.querySelector('.sl-hs-diseno').value)||0;
     var hsProd=parseFloat(it.querySelector('.sl-hs-prod').value)||0;
-    var mdoUnit=hsDis*horaDis+hsProd*horaProd;
+    var mdoTotal=hsDis*horaDis+hsProd*horaProd;
     var matUnitConMargen=(costoMat/Math.max(1,qty))*(1+margen);
-    var precioUnit=Math.round(matUnitConMargen+mdoUnit);
-    var totalItem=precioUnit*qty;
-    var gananciaItem=((costoMat/Math.max(1,qty))*margen+mdoUnit)*qty;
+    var totalCalc=Math.round(matUnitConMargen*qty+mdoTotal);
+    var precioUnitCalc=Math.round(totalCalc/Math.max(1,qty));
+    var pfEl=it.querySelector('.sl-precio-final');
+    var pfVal=pfEl&&pfEl.value.trim()!==''?(parseFloat(pfEl.value)||0):0;
+    var precioUnit=pfVal>0?pfVal:precioUnitCalc;
+    var totalItem=pfVal>0?precioUnit*qty:totalCalc;
+    var gananciaItem=pfVal>0?(totalItem-costoMat):((costoMat/Math.max(1,qty))*margen*qty+mdoTotal);
+    var pfCalcEl=it.querySelector('.sl-precio-calc');
+    if(pfCalcEl) pfCalcEl.textContent=fmt(precioUnitCalc);
     totalBase+=costoMat; totalPedido+=totalItem; totalGanancia+=gananciaItem; totalUnidades+=qty;
     it.querySelector('.sl-mat-total').textContent=fmt(costoMat);
     it.querySelector('.sl-unit-price').textContent=fmt(precioUnit);
@@ -2385,6 +2689,7 @@ function slGenerarPresupuesto(){
     +'<div class="pres-contact-item">'+wa+' 3576477329</div>'
     +'</div>'
     +'<p class="pres-note">Los pedidos son reservados con una seña del 50%</p>'
+    +'<div class="pres-alias"><span>Alias: <strong>antula.estudio2025</strong></span><span class="pres-alias-bank"><svg width="11" height="13" viewBox="0 0 11 13" fill="#EC0000"><path d="M5.5 0C3.8 2.5 1 3.5 1 6.5a4.5 4.5 0 009 0C10 3.5 7.2 2.5 5.5 0z"/></svg>Santander</span></div>'
     +'</div>';
   window._lastPresupuesto={categoria:'Sublimados',descripcion:'',items:items,total:total,costoMat:window._presBase||0,ganancia:window._presGanancia||0};
   document.getElementById('pres-overlay').classList.remove('hidden');
@@ -2407,7 +2712,7 @@ function otAddItem(){
     +'<p class="est-sub-title">Materiales (para el pedido completo)</p>'
     +'<div class="on-mats"></div>'
     +'<button class="add-btn" onclick="otAddMat(this)" style="margin-top:6px;"><i class="ti ti-plus"></i> Agregar material</button>'
-    +'<p class="est-sub-title" style="margin-top:10px;">Mano de obra (pedido completo)</p>'
+    +'<p class="est-sub-title" style="margin-top:10px;">Mano de obra (a pedido completo)</p>'
     +'<div class="field-row"><span class="field-label">Horas de diseño</span>'
     +'<div style="display:flex;align-items:center;gap:6px;"><input type="number" class="a-input w70 on-hs-dis" value="0" min="0" step="0.5" oninput="otCalcular()"><span class="field-unit">hs</span></div></div>'
     +'<div class="field-row"><span class="field-label">Horas estampado/corte</span>'
@@ -2415,6 +2720,10 @@ function otAddItem(){
     +'<div class="calc-info">'
     +'<div class="chip"><b class="on-mat-total">$0</b><small>Mat. pedido</small></div>'
     +'<div class="chip"><b class="on-unit-price">$0</b><small>Precio unitario</small></div>'
+    +'</div>'
+    +'<div class="pf-override">'
+    +'<span class="pf-calc-hint">Calculado: <b class="on-precio-calc">$0</b></span>'
+    +'<div style="display:flex;align-items:center;gap:5px;"><span class="pf-lbl">Redondear a $</span><input type="number" class="a-input w90 on-precio-final" placeholder="auto" min="0" step="100" oninput="otCalcular()"></div>'
     +'</div>';
   c.appendChild(div);
   otRenumberN(); otCalcular();
@@ -2489,9 +2798,14 @@ function otCalcular(){
     var hsDis=parseFloat(it.querySelector('.on-hs-dis').value)||0;
     var hsProd=parseFloat(it.querySelector('.on-hs-prod').value)||0;
     var mdoTotal=hsDis*horaDis+hsProd*horaProd;
-    var totalItem=Math.round(costoMat*(1+margen)+mdoTotal);
+    var totalCalc=Math.round(costoMat*(1+margen)+mdoTotal);
+    var pfEl=it.querySelector('.on-precio-final');
+    var pfVal=pfEl&&pfEl.value.trim()!==''?(parseFloat(pfEl.value)||0):0;
+    var totalItem=pfVal>0?pfVal:totalCalc;
     var precioUnit=Math.round(totalItem/Math.max(1,qty));
-    var gananciaItem=costoMat*margen+mdoTotal;
+    var gananciaItem=pfVal>0?(totalItem-costoMat):(costoMat*margen+mdoTotal);
+    var pfCalcEl=it.querySelector('.on-precio-calc');
+    if(pfCalcEl) pfCalcEl.textContent=fmt(totalCalc);
     totalBase+=costoMat; totalPedido+=totalItem; totalGanancia+=gananciaItem; totalUnidades+=qty;
     it.querySelector('.on-mat-total').textContent=fmt(costoMat);
     it.querySelector('.on-unit-price').textContent=fmt(precioUnit);
@@ -2531,12 +2845,18 @@ function otGenPresN(){
     +'<div class="pres-footer"><div class="pres-contact-item"><i class="ti ti-mail"></i> antulaestudio@gmail.com</div>'
     +'<div class="pres-contact-item">'+wa+' 3576477329</div></div>'
     +'<p class="pres-note">Los pedidos son reservados con una seña del 50%</p>'
+    +'<div class="pres-alias"><span>Alias: <strong>antula.estudio2025</strong></span><span class="pres-alias-bank"><svg width="11" height="13" viewBox="0 0 11 13" fill="#EC0000"><path d="M5.5 0C3.8 2.5 1 3.5 1 6.5a4.5 4.5 0 009 0C10 3.5 7.2 2.5 5.5 0z"/></svg>Santander</span></div>'
     +'</div>';
   window._lastPresupuesto={categoria:'Otros (Nuevo)',descripcion:'',items:items,total:total,costoMat:window._presBase||0,ganancia:window._presGanancia||0};
   document.getElementById('pres-overlay').classList.remove('hidden');
 }
 
 function opAddItem(){
+  // Abre el picker de preciarios si hay alguno cargado, si no agrega manual
+  precOpenPicker();
+}
+
+function opAddItemManual(){
   var c=document.getElementById('op-items');
   var div=document.createElement('div');
   div.className='est-item op-item';
@@ -2545,7 +2865,7 @@ function opAddItem(){
     +'<span class="pc-item-title">Producto</span>'
     +'<button class="remove-btn op-item-del" onclick="opRemoveItem(this)"><i class="ti ti-trash"></i></button>'
     +'</div>'
-    +'<input type="text" class="est-titulo op-nombre" placeholder="Nombre del producto (ej. Kit Día del Padre)" oninput="opRenumber();opCalcular()">'
+    +'<input type="text" class="est-titulo op-nombre" placeholder="Nombre del producto" oninput="opRenumber();opCalcular()">'
     +'<div class="field-row"><span class="field-label">Cantidad</span>'
     +'<input type="number" class="a-input w70 op-qty" value="1" min="1" step="1" oninput="opCalcular()"></div>'
     +'<div class="field-row"><span class="field-label">Costo por unidad</span>'
@@ -2563,8 +2883,95 @@ function opAddItem(){
 }
 
 function opRemoveItem(btn){
-  if(document.querySelectorAll('#op-items .op-item').length<=1) return;
   btn.closest('.op-item').remove(); opRenumber(); opCalcular();
+}
+
+/* ---- Preciario picker (para Precalculados) ---- */
+function precOpenPicker(){
+  var overlay=document.getElementById('prec-picker-overlay');
+  overlay.classList.remove('hidden');
+  var listEl=document.getElementById('prec-picker-list');
+
+  function renderPicker(data){
+    if(!data||!data.length){
+      listEl.innerHTML=
+        '<div class="prec-picker-empty">'+
+          '<i class="ti ti-file-dollar" style="font-size:32px;display:block;margin-bottom:8px;color:var(--line);"></i>'+
+          'No hay preciarios guardados aún.<br>'+
+          '<small>Creá uno en Gestión → Gestión de Preciario</small>'+
+          '<br><br>'+
+          '<button class="gest-btn" style="margin:0 auto;background:var(--cream2);color:var(--ink);border:1px solid var(--line);" onclick="precClosePicker();opAddItemManual()">Agregar manualmente</button>'+
+        '</div>';
+      return;
+    }
+    var html='';
+    data.forEach(function(p){
+      var costos=[];
+      try{costos=JSON.parse(p.costos||'[]');}catch(e){}
+      var totalCosto=costos.reduce(function(s,c){return s+(parseFloat(c.monto)||0);},0);
+      var precio=parseFloat(p.precioVenta)||0;
+      var margen=precio>0?Math.round(((precio-totalCosto)/precio)*100):0;
+      html+=
+        '<div class="prec-picker-item" onclick="precPickerSelect(\''+p.id+'\')">'+
+          '<div>'+
+            '<div class="prec-picker-name">'+escHtml(p.nombre||'Sin nombre')+'</div>'+
+            '<div class="prec-picker-meta">Costo: $'+balFmt(totalCosto)+' · Margen: '+margen+'%</div>'+
+          '</div>'+
+          '<div class="prec-picker-price">$'+balFmt(precio)+'</div>'+
+        '</div>';
+    });
+    html+='<div style="text-align:center;margin-top:10px;"><button class="gest-btn" style="background:var(--cream2);color:var(--muted);border:1px solid var(--line);font-size:11px;" onclick="precClosePicker();opAddItemManual()"><i class="ti ti-pencil"></i> Agregar manualmente</button></div>';
+    listEl.innerHTML=html;
+  }
+
+  // Usa cache si está disponible
+  if(_prec&&_prec.length){renderPicker(_prec);return;}
+  listEl.innerHTML='<div class="prec-picker-empty"><i class="ti ti-loader"></i> Cargando...</div>';
+  var cached=sessionStorage.getItem('_gc_preciario');
+  if(cached){var obj=JSON.parse(cached);if(Date.now()-obj.ts<60000){_prec=obj.data||[];renderPicker(_prec);return;}}
+  asCall({action:'getPreciario'},function(res){
+    _prec=res.ok?(res.data||[]):[];
+    if(res.ok)sessionStorage.setItem('_gc_preciario',JSON.stringify({ts:Date.now(),data:_prec}));
+    renderPicker(_prec);
+  });
+}
+
+function precClosePicker(){
+  document.getElementById('prec-picker-overlay').classList.add('hidden');
+}
+
+function precPickerSelect(id){
+  var item=_prec.find(function(p){return String(p.id)===String(id);});
+  if(!item)return;
+  precClosePicker();
+  var costos=[];
+  try{costos=JSON.parse(item.costos||'[]');}catch(e){}
+  var totalCosto=costos.reduce(function(s,c){return s+(parseFloat(c.monto)||0);},0);
+  var precio=parseFloat(item.precioVenta)||0;
+
+  var c=document.getElementById('op-items');
+  var div=document.createElement('div');
+  div.className='est-item op-item op-item-prec';
+  div.innerHTML=''
+    +'<div class="pc-item-head">'
+    +'<div style="display:flex;align-items:center;gap:7px;">'
+    +'<span class="pc-item-title">'+escHtml(item.nombre||'Producto')+'</span>'
+    +'<span class="op-prec-badge">preciario</span>'
+    +'</div>'
+    +'<button class="remove-btn op-item-del" onclick="opRemoveItem(this)"><i class="ti ti-trash"></i></button>'
+    +'</div>'
+    +'<div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Precio: $'+balFmt(precio)+'/u · Costo: $'+balFmt(totalCosto)+'/u</div>'
+    +'<div class="field-row"><span class="field-label">Cantidad</span>'
+    +'<input type="number" class="a-input w70 op-qty" value="1" min="1" step="1" oninput="opCalcular()"></div>'
+    +'<div class="calc-info">'
+    +'<div class="chip"><b class="op-ganancia-item">$0</b><small>Ganancia</small></div>'
+    +'<div class="chip"><b class="op-total-item">$0</b><small>Total ítem</small></div>'
+    +'</div>'
+    +'<input type="hidden" class="op-nombre" value="'+escHtml(item.nombre||'Producto')+'">'
+    +'<input type="hidden" class="op-costo" value="'+totalCosto+'">'
+    +'<input type="hidden" class="op-precio" value="'+precio+'">';
+  c.appendChild(div);
+  opRenumber(); opCalcular();
 }
 
 function opRenumber(){
@@ -2627,17 +3034,18 @@ function opGenPresP(){
     +'<div class="pres-footer"><div class="pres-contact-item"><i class="ti ti-mail"></i> antulaestudio@gmail.com</div>'
     +'<div class="pres-contact-item">'+wa+' 3576477329</div></div>'
     +'<p class="pres-note">Los pedidos son reservados con una seña del 50%</p>'
+    +'<div class="pres-alias"><span>Alias: <strong>antula.estudio2025</strong></span><span class="pres-alias-bank"><svg width="11" height="13" viewBox="0 0 11 13" fill="#EC0000"><path d="M5.5 0C3.8 2.5 1 3.5 1 6.5a4.5 4.5 0 009 0C10 3.5 7.2 2.5 5.5 0z"/></svg>Santander</span></div>'
     +'</div>';
   window._lastPresupuesto={categoria:'Otros (Combo)',descripcion:'',items:items,total:total,costoMat:window._presBase||0,ganancia:window._presGanancia||0};
   document.getElementById('pres-overlay').classList.remove('hidden');
 }
 
 function otInitN(){document.getElementById('on-items').innerHTML='';otAddItem();}
-function opInitP(){document.getElementById('op-items').innerHTML='';opAddItem();}
+function opInitP(){document.getElementById('op-items').innerHTML='';opCalcular();}
 function otInit(){otInitN();opInitP();}
 
 /* ============ APPS SCRIPT INTEGRATION ============ */
-var AS_URL='https://script.google.com/macros/s/AKfycbytnReTwXgg9twVHU7rF2KppKlK1-bH_lQahmfuf81Ks0euQBPbKrc3fgQBXLVEvxlawg/exec';
+var AS_URL='https://script.google.com/macros/s/AKfycbz5Pj7hkUVscbiUsQqcosc_jSrU17XAIOw5Pw4mmoXIlSPS9PM6nHcon3QLrKen6QmGBQ/exec';
 var AS_TOKEN='antula930';
 
 function asCall(params,cb){
@@ -2753,6 +3161,8 @@ function renderPres(data){
     if(p.estadoEfectivo==='Pendiente'){
       actionBtns='<button class="gest-btn confirm" data-id="'+p.id+'" data-cliente="'+escHtml(p.cliente)+'" data-total="'+p.total+'" onclick="gestOpenConfirm(this.dataset.id,this.dataset.cliente,parseFloat(this.dataset.total))">'
         +'<i class="ti ti-check"></i> Confirmar venta</button>'
+        +'<button class="gest-btn" style="background:rgba(240,128,45,.1);color:var(--orange);border:1px solid rgba(240,128,45,.25);" data-id="'+p.id+'" onclick="gestOpenEdit(this.dataset.id)">'
+        +'<i class="ti ti-pencil"></i> Editar</button>'
         +'<button class="gest-btn danger" data-id="'+p.id+'" onclick="gestDescartar(this.dataset.id)">'
         +'<i class="ti ti-x"></i> Descartar</button>';
     }
@@ -2772,7 +3182,7 @@ function renderPres(data){
 var _gestVentFilter='Todos';
 function gestSetVentFilter(f){
   _gestVentFilter=f;
-  var map={'Todos':'vf-todos','Con saldo':'vf-saldo','Pagado':'vf-pagado'};
+  var map={'Todos':'vf-todos','Con saldo':'vf-saldo','Pagado':'vf-pagado','Cancelada':'vf-cancelada'};
   Object.keys(map).forEach(function(k){
     var el=document.getElementById(map[k]);
     if(el) el.classList.toggle('active',k===f);
@@ -2798,23 +3208,35 @@ function gestLoadVentas(){
   });
 }
 function gestRefreshVentas(){sessionStorage.removeItem('_gc_vent');gestLoadVentas();}
+function gestCancelarVenta(id){
+  if(!confirm('¿Cancelar esta venta? Quedará registrada como Cancelada.')) return;
+  asCall({action:'cancelarVenta',ventaId:id},function(res){
+    if(res.ok) gestRefreshVentas();
+    else alert('Error al cancelar la venta: '+(res.error||''));
+  });
+}
 function renderVentas(data){
   var list=document.getElementById('gest-vent-list');
   data.sort(function(a,b){return b.fecha.localeCompare(a.fecha);});
-  var filtered=_gestVentFilter==='Todos'?data:
+  var filtered=_gestVentFilter==='Todos'?data.filter(function(v){return v.estado!=='Cancelada';}):
     _gestVentFilter==='Pagado'?data.filter(function(v){return v.estado==='Pagado';}):
-    data.filter(function(v){return v.estado!=='Pagado';});
+    _gestVentFilter==='Cancelada'?data.filter(function(v){return v.estado==='Cancelada';}):
+    data.filter(function(v){return v.estado!=='Pagado'&&v.estado!=='Cancelada';});
   if(!filtered.length){
     list.innerHTML='<div class="gest-empty"><i class="ti ti-shopping-cart"></i>Sin ventas en esta categoría</div>';
     return;
   }
   list.innerHTML=filtered.map(function(v){
-      var bc=v.estado==='Pagado'?'pagado':'seniado';
+      var bc=v.estado==='Pagado'?'pagado':v.estado==='Cancelada'?'cancelada':'seniado';
       var histBtn='<button class="gest-btn" style="background:rgba(59,28,107,.08);color:var(--purple);border:1px solid rgba(59,28,107,.15);" data-id="'+v.id+'" onclick="gestOpenPagosModal(this.dataset.id)">'
       +'<i class="ti ti-history"></i> Pagos</button>';
-    var pagoBtn=v.estado!=='Pagado'
+    var pagoBtn=v.estado!=='Pagado'&&v.estado!=='Cancelada'
         ?'<button class="gest-btn pago" data-id="'+v.id+'" data-cliente="'+escHtml(v.cliente)+'" data-saldo="'+v.saldo+'" onclick="gestOpenPago(this.dataset.id,this.dataset.cliente,parseFloat(this.dataset.saldo))">'
           +'<i class="ti ti-credit-card"></i> Registrar pago</button>'
+        :'';
+    var cancelBtn=v.estado!=='Cancelada'
+        ?'<button class="gest-btn danger" data-id="'+v.id+'" onclick="gestCancelarVenta(this.dataset.id)">'
+          +'<i class="ti ti-ban"></i> Cancelar</button>'
         :'';
       return '<div class="gest-card">'
         +'<div class="gest-card-head"><span class="gest-card-name">'+escHtml(v.cliente||'Sin nombre')+'</span>'
@@ -2826,17 +3248,169 @@ function renderVentas(data){
         +(v.saldo>0?'<div style="font-size:12px;color:var(--magenta);font-weight:600;">Saldo: '+fmt(v.saldo)+'</div>':'')
         +'<div style="font-size:12px;color:#2a9d8f;font-weight:600;">Cobrado: '+fmt(v.seniado)+'</div>'
         +'</div>'
-        +'<div class="gest-card-btns">'+histBtn+(pagoBtn?pagoBtn:'')+'</div>'
+        +'<div class="gest-card-btns">'+histBtn+(pagoBtn?pagoBtn:'')+(cancelBtn?cancelBtn:'')+'</div>'
         +'</div>';
     }).join('');
 }
 
+// ── Editar Presupuesto ────────────────────────────────────────────
+var _gestEditId=null,_gestEditOrigCosto=0,_gestEditOrigTotal=0;
+function gestOpenEdit(id){
+  var p=_gestPresMap&&_gestPresMap[id];
+  if(!p){alert('No se encontró el presupuesto.');return;}
+  _gestEditId=id;
+  document.getElementById('gest-edit-categoria').textContent=p.categoria||'';
+  document.getElementById('gest-edit-cliente').value=p.cliente||'';
+  document.getElementById('gest-edit-desc').value=p.descripcion||'';
+  // Build items rows
+  var items=[];
+  try{items=JSON.parse(p.items||'[]');}catch(e){}
+  var cont=document.getElementById('gest-edit-items');
+  cont.innerHTML='';
+  if(items.length){
+    items.forEach(function(it){
+      var unitPrice=it.qty>0?Math.round(it.total/it.qty):it.total;
+      cont.appendChild(gestEditMakeRow(it.nombre||'',it.qty||1,unitPrice));
+    });
+  } else {
+    cont.appendChild(gestEditMakeRow('',1,0));
+  }
+  _gestEditOrigCosto=parseFloat(p.costoMat)||0;
+  _gestEditOrigTotal=parseFloat(p.total)||0;
+  gestEditCalc();
+  document.getElementById('gest-edit-modal').classList.remove('hidden');
+}
+function gestEditMakeRow(nombre,qty,unitPrice){
+  var row=document.createElement('div');
+  row.className='gest-edit-item-row';
+  row.style.cssText='display:grid;grid-template-columns:1fr 44px 76px 62px 22px;gap:4px;align-items:center;margin-bottom:6px;';
+  row.innerHTML=''
+    +'<input type="text" class="a-input ge-nombre" placeholder="Descripción" value="'+escHtml(nombre)+'" oninput="gestEditCalc()" style="font-size:12px;padding:5px 7px;">'
+    +'<input type="number" class="a-input ge-qty" value="'+qty+'" min="0" step="1" oninput="gestEditCalc()" style="font-size:12px;padding:5px 4px;text-align:center;">'
+    +'<input type="number" class="a-input ge-price" value="'+unitPrice+'" min="0" step="100" oninput="gestEditCalc()" style="font-size:12px;padding:5px 5px;text-align:right;">'
+    +'<span class="ge-subtotal" style="font-size:12px;font-weight:600;color:var(--purple);text-align:right;">'+fmt(qty*unitPrice)+'</span>'
+    +'<button onclick="this.closest(\'.gest-edit-item-row\').remove();gestEditCalc();" style="background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0;line-height:1;">×</button>';
+  return row;
+}
+function gestEditAddItem(){
+  var cont=document.getElementById('gest-edit-items');
+  cont.appendChild(gestEditMakeRow('',1,0));
+  gestEditCalc();
+}
+function gestEditCalc(){
+  var total=0;
+  document.querySelectorAll('#gest-edit-items .gest-edit-item-row').forEach(function(row){
+    var qty=parseFloat(row.querySelector('.ge-qty').value)||0;
+    var price=parseFloat(row.querySelector('.ge-price').value)||0;
+    var sub=Math.round(qty*price);
+    row.querySelector('.ge-subtotal').textContent=fmt(sub);
+    total+=sub;
+  });
+  document.getElementById('gest-edit-total').textContent=fmt(total);
+  var ratio=_gestEditOrigTotal>0?(total/_gestEditOrigTotal):1;
+  var costo=Math.round(_gestEditOrigCosto*ratio);
+  var costoEl=document.getElementById('gest-edit-costo');
+  if(costoEl) costoEl.textContent=fmt(costo);
+}
+function gestCloseEdit(){
+  document.getElementById('gest-edit-modal').classList.add('hidden');
+  _gestEditId=null;
+}
+function gestDoEdit(){
+  var p=_gestPresMap&&_gestPresMap[_gestEditId];
+  if(!p||!_gestEditId) return;
+  var cliente=(document.getElementById('gest-edit-cliente').value||'').trim();
+  if(!cliente){document.getElementById('gest-edit-cliente').focus();alert('Ingresá el nombre del cliente.');return;}
+  // Collect items
+  var items=[];
+  var total=0;
+  document.querySelectorAll('#gest-edit-items .gest-edit-item-row').forEach(function(row){
+    var nombre=(row.querySelector('.ge-nombre').value||'').trim();
+    var qty=parseFloat(row.querySelector('.ge-qty').value)||0;
+    var price=parseFloat(row.querySelector('.ge-price').value)||0;
+    var sub=Math.round(qty*price);
+    if(nombre||sub) items.push({nombre:nombre,qty:qty,total:sub});
+    total+=sub;
+  });
+  if(!items.length){alert('Agregá al menos un ítem.');return;}
+  var ratio=_gestEditOrigTotal>0?(total/_gestEditOrigTotal):1;
+  var costoMat=Math.round(_gestEditOrigCosto*ratio);
+  var ganancia=total-costoMat;
+  var desc=(document.getElementById('gest-edit-desc').value||'').trim();
+  var vendedora=sessionStorage.getItem('antula_vendedora')||'Antula';
+  var btn=document.getElementById('gest-edit-save-btn');
+  btn.disabled=true; btn.textContent='Guardando...';
+  // 1) Descartar el presupuesto viejo
+  asCall({action:'descartarPresupuesto',presupuestoId:_gestEditId},function(res1){
+    if(!res1.ok){
+      btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i> Guardar';
+      alert('Error al descartar el presupuesto anterior: '+(res1.error||''));
+      return;
+    }
+    // 2) Crear presupuesto nuevo con los datos actualizados
+    asCall({
+      action:'registrarPresupuesto',
+      cliente:cliente,
+      categoria:p.categoria||'',
+      descripcion:desc,
+      items:JSON.stringify(items),
+      total:total,
+      costoMat:costoMat,
+      ganancia:ganancia,
+      vendedora:vendedora
+    },function(res2){
+      btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i> Guardar';
+      gestCloseEdit();
+      if(res2.ok){
+        gestRefreshPres();
+      } else {
+        alert('Error al registrar el presupuesto actualizado: '+(res2.error||''));
+      }
+    });
+  });
+}
+// ─────────────────────────────────────────────────────────────────
+
 function gestOpenConfirm(id,cliente,total){
   _gestPendingId=id;
   _gestPendingTotal=parseFloat(total)||0;
-  document.getElementById('gest-confirm-info').textContent=cliente+' — '+fmt(total);
+  document.getElementById('gest-confirm-info').textContent=cliente;
   document.getElementById('gest-senia-input').value=0;
+  // Populate items
+  var p=_gestPresMap&&_gestPresMap[id];
+  var items=[];
+  try{items=JSON.parse((p&&p.items)||'[]');}catch(e){}
+  var itemsHtml='';
+  if(items.length){
+    itemsHtml=items.map(function(it){
+      var unitPrice=it.qty>0?(it.total/it.qty):it.total;
+      return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">'
+        +'<span style="font-size:12px;flex:1;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="'+escHtml(it.nombre||'')+'">'+escHtml(it.nombre||'')+'</span>'
+        +'<input type="number" class="a-input w60 gc-qty-inp" value="'+it.qty+'" min="0" step="1"'
+        +' data-unit="'+unitPrice+'" data-nombre="'+escHtml(it.nombre||'')+'"'
+        +' oninput="gestUpdateConfirmQty()" style="text-align:center;padding:3px 5px;font-size:13px;">'
+        +'<span style="font-size:12px;font-weight:600;color:var(--purple);min-width:62px;text-align:right;" class="gc-item-total">'+fmt(Math.round(it.total))+'</span>'
+        +'</div>';
+    }).join('');
+  } else {
+    itemsHtml='<p style="font-size:12px;color:var(--muted);margin:0;">Sin ítems detallados.</p>';
+  }
+  document.getElementById('gest-confirm-items').innerHTML=itemsHtml;
+  document.getElementById('gest-confirm-total').textContent=fmt(_gestPendingTotal);
   document.getElementById('gest-confirm-modal').classList.remove('hidden');
+}
+function gestUpdateConfirmQty(){
+  var total=0;
+  document.querySelectorAll('#gest-confirm-items .gc-qty-inp').forEach(function(inp){
+    var unitPrice=parseFloat(inp.dataset.unit)||0;
+    var qty=parseFloat(inp.value)||0;
+    var itemTotal=Math.round(unitPrice*qty);
+    var totalEl=inp.parentElement.querySelector('.gc-item-total');
+    if(totalEl) totalEl.textContent=fmt(itemTotal);
+    total+=itemTotal;
+  });
+  _gestPendingTotal=total;
+  document.getElementById('gest-confirm-total').textContent=fmt(total);
 }
 function gestCloseConfirm(){
   document.getElementById('gest-confirm-modal').classList.add('hidden');
@@ -2849,10 +3423,19 @@ function gestDoConfirm(){
     alert('La seña ('+fmt(senia)+') no puede superar el total del pedido ('+fmt(_gestPendingTotal)+'). Revisá el monto.');
     return;
   }
+  // Collect updated items
+  var updatedItems=[];
+  document.querySelectorAll('#gest-confirm-items .gc-qty-inp').forEach(function(inp){
+    var qty=parseFloat(inp.value)||0;
+    var unitPrice=parseFloat(inp.dataset.unit)||0;
+    updatedItems.push({nombre:inp.dataset.nombre||'',qty:qty,total:Math.round(unitPrice*qty)});
+  });
   var vendedora=sessionStorage.getItem('antula_vendedora')||'Antula';
   var btn=document.querySelector('#gest-confirm-modal .pres-action-btn.primary');
   btn.disabled=true; btn.textContent='Guardando...';
-  asCall({action:'confirmarVenta',presupuestoId:_gestPendingId,senia:senia,vendedora:vendedora},function(res){
+  var params={action:'confirmarVenta',presupuestoId:_gestPendingId,senia:senia,vendedora:vendedora,totalActualizado:_gestPendingTotal};
+  if(updatedItems.length) params.itemsActualizados=JSON.stringify(updatedItems);
+  asCall(params,function(res){
     btn.disabled=false; btn.textContent='Confirmar';
     gestCloseConfirm();
     if(res.ok) gestRefreshPres();
@@ -2923,6 +3506,7 @@ function gestVerPres(id){
     +'<div class="pres-footer"><div class="pres-contact-item"><i class="ti ti-mail"></i> antulaestudio@gmail.com</div>'
     +'<div class="pres-contact-item">'+wa+' 3576477329</div></div>'
     +'<p class="pres-note">Los pedidos son reservados con una seña del 50%</p>'
+    +'<div class="pres-alias"><span>Alias: <strong>antula.estudio2025</strong></span><span class="pres-alias-bank"><svg width="11" height="13" viewBox="0 0 11 13" fill="#EC0000"><path d="M5.5 0C3.8 2.5 1 3.5 1 6.5a4.5 4.5 0 009 0C10 3.5 7.2 2.5 5.5 0z"/></svg>Santander</span></div>'
     +'</div>';
   document.getElementById('pres-overlay').classList.remove('hidden');
 }
@@ -3024,6 +3608,493 @@ function gestInit(){
   document.getElementById('gest-panel-pres').style.display='';
   document.getElementById('gest-panel-vent').style.display='none';
   gestLoadPres();
+}
+
+/* ============ BÚSQUEDA ============ */
+function gestSearchPres(){
+  var term=(document.getElementById('pres-search').value||'').toLowerCase().trim();
+  var cached=sessionStorage.getItem('_gc_pres');
+  if(!cached){gestLoadPres();return;}
+  var data=JSON.parse(cached).data||[];
+  if(term) data=data.filter(function(p){
+    return (p.cliente||'').toLowerCase().includes(term)||
+           (p.descripcion||'').toLowerCase().includes(term)||
+           (p.categoria||'').toLowerCase().includes(term);
+  });
+  renderPres(data);
+}
+
+function gestSearchVentas(){
+  var term=(document.getElementById('vent-search').value||'').toLowerCase().trim();
+  var data=_gestVentCache||[];
+  if(term) data=data.filter(function(v){
+    return (v.cliente||'').toLowerCase().includes(term)||
+           (v.descripcion||'').toLowerCase().includes(term)||
+           (v.categoria||'').toLowerCase().includes(term);
+  });
+  renderVentas(data);
+}
+
+var _egSearch='';
+function egSearch(){
+  _egSearch=(document.getElementById('eg-search').value||'').toLowerCase().trim();
+  var cached=sessionStorage.getItem('_gc_egresos');
+  if(!cached){egRenderHist();return;}
+  egMostrarHist(JSON.parse(cached).data||[]);
+}
+
+/* ============ BALANCES ============ */
+var _balPeriod='mes-ant';
+var _balCustomRange=null;
+var _BAL_MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function balInit(){balSetPeriod(_balPeriod);}
+
+function balSetPeriod(period){
+  _balPeriod=period;
+  document.querySelectorAll('.bal-period-tab').forEach(function(t){t.classList.toggle('active',t.dataset.period===period);});
+  var cp=document.getElementById('bal-custom-picker');
+  if(cp) cp.style.display=period==='personalizado'?'flex':'none';
+  if(period!=='personalizado') balLoadAll(balRender);
+}
+
+function balApplyCustom(){
+  var from=document.getElementById('bal-from-month').value;
+  var to=document.getElementById('bal-to-month').value;
+  if(!from||!to||from>to){alert('Seleccioná un rango válido.');return;}
+  _balCustomRange={from:from,to:to};
+  balLoadAll(balRender);
+}
+
+function balRefresh(){
+  sessionStorage.removeItem('_gc_vent');
+  sessionStorage.removeItem('_gc_egresos');
+  document.getElementById('bal-content').innerHTML='<div class="bal-loading"><i class="ti ti-loader"></i> Actualizando...</div>';
+  balLoadAll(balRender);
+}
+
+function balParseDate(str){
+  if(!str)return null;
+  var s=String(str);
+  if(s.indexOf('T')>-1||(s.indexOf('-')>-1&&s.split('-').length===3)){var d=new Date(s);if(!isNaN(d))return d;}
+  var p=s.split('/');
+  if(p.length>=3)return new Date(+p[2],+p[1]-1,+p[0]);
+  return null;
+}
+
+function balGetMonthKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');}
+
+function balGetRange(){
+  var now=new Date(),y=now.getFullYear(),m=now.getMonth();
+  if(_balPeriod==='mes'){
+    var k=y+'-'+String(m+1).padStart(2,'0');
+    return{from:k,to:k,label:_BAL_MESES[m]+' '+y};
+  } else if(_balPeriod==='mes-ant'){
+    var pm=m===0?11:m-1,py=m===0?y-1:y;
+    var k2=py+'-'+String(pm+1).padStart(2,'0');
+    return{from:k2,to:k2,label:_BAL_MESES[pm]+' '+py};
+  } else if(_balCustomRange){
+    var f=_balCustomRange.from.split('-'),t=_balCustomRange.to.split('-');
+    var lbl=_balCustomRange.from===_balCustomRange.to
+      ?_BAL_MESES[+f[1]-1]+' '+f[0]
+      :_BAL_MESES[+f[1]-1]+' '+f[0]+' — '+_BAL_MESES[+t[1]-1]+' '+t[0];
+    return{from:_balCustomRange.from,to:_balCustomRange.to,label:lbl};
+  }
+  return null;
+}
+
+function balFmt(n){return '$'+Math.round(n).toLocaleString('es-AR');}
+
+function balLoadAll(cb){
+  document.getElementById('bal-content').innerHTML='<div class="bal-loading"><i class="ti ti-loader"></i> Cargando...</div>';
+  var ventasData=null,egresosData=null;
+  function tryDone(){if(ventasData!==null&&egresosData!==null){balBuildSelectors(ventasData,egresosData);cb(ventasData,egresosData);}}
+  var cacheV=sessionStorage.getItem('_gc_vent');
+  if(cacheV){var ov=JSON.parse(cacheV);if(Date.now()-ov.ts<60000){ventasData=ov.data||[];tryDone();}}
+  if(ventasData===null){asCall({action:'getVentas'},function(res){ventasData=res.ok?(res.data||[]):[];if(res.ok)sessionStorage.setItem('_gc_vent',JSON.stringify({ts:Date.now(),data:ventasData}));tryDone();});}
+  var cacheE=sessionStorage.getItem('_gc_egresos');
+  if(cacheE){var oe=JSON.parse(cacheE);if(Date.now()-oe.ts<60000){egresosData=oe.data||[];tryDone();}}
+  if(egresosData===null){asCall({action:'getEgresos'},function(res){egresosData=res.ok?(res.data||[]):[];if(res.ok)sessionStorage.setItem('_gc_egresos',JSON.stringify({ts:Date.now(),data:egresosData}));tryDone();});}
+}
+
+function balBuildSelectors(ventas,egresos){
+  var months={};
+  ventas.forEach(function(v){var d=balParseDate(v.fecha);if(d)months[balGetMonthKey(d)]=true;});
+  egresos.forEach(function(e){var d=balParseDate(e.fecha);if(d)months[balGetMonthKey(d)]=true;});
+  var sorted=Object.keys(months).sort();
+  var opts=sorted.map(function(k){var p=k.split('-');return '<option value="'+k+'">'+_BAL_MESES[+p[1]-1]+' '+p[0]+'</option>';}).join('');
+  var fEl=document.getElementById('bal-from-month');if(fEl)fEl.innerHTML=opts;
+  var tEl=document.getElementById('bal-to-month');if(tEl){tEl.innerHTML=opts;tEl.value=sorted[sorted.length-1]||'';}
+}
+
+function balRender(ventasAll,egresosAll){
+  var range=balGetRange();
+  if(!range){document.getElementById('bal-content').innerHTML='<div class="bal-loading">Seleccioná un rango.</div>';return;}
+
+  var ventas=ventasAll.filter(function(v){var d=balParseDate(v.fecha);if(!d)return false;if(v.estado==='Cancelada')return false;var k=balGetMonthKey(d);return k>=range.from&&k<=range.to;});
+  var egresos=egresosAll.filter(function(e){var d=balParseDate(e.fecha);if(!d)return false;var k=balGetMonthKey(d);return k>=range.from&&k<=range.to;});
+
+  var ingresos=ventas.reduce(function(s,v){return s+(Number(v.total)||Number(v.monto)||Number(v.precioVenta)||0);},0);
+  var pendienteCobro=ventas.reduce(function(s,v){return s+(Number(v.saldo)||0);},0);
+  var numVentas=ventas.length;
+  var egresosSinRet=egresos.filter(function(e){return e.tipo!=='Retiros';});
+  var retiros=egresos.filter(function(e){return e.tipo==='Retiros';});
+  var totalEgr=egresosSinRet.reduce(function(s,e){return s+(Number(e.monto)||0);},0);
+  var totalRet=retiros.reduce(function(s,e){return s+(Number(e.monto)||0);},0);
+  var saldo=ingresos-totalEgr;
+
+  var egCats={};
+  egresosSinRet.forEach(function(e){var t=e.tipo||'Otros';egCats[t]=(egCats[t]||0)+(Number(e.monto)||0);});
+  var egEntries=Object.entries(egCats).sort(function(a,b){return b[1]-a[1];});
+  var maxEg=egEntries.length?egEntries[0][1]:1;
+  var EGR_COLORS={'Mercadería':'#C21D8F','Servicios y transportes':'#F0802D','Inversiones':'#2a9d8f','Mantenimiento':'#8b5cf6','Otros':'#9a8fa6'};
+
+  var ingCats={};
+  ventas.forEach(function(v){var t=v.tipo||v.Tipo||v.categoria||v.Categoria||v.rubro||'Sin categoría';ingCats[t]=(ingCats[t]||0)+(Number(v.total)||Number(v.monto)||Number(v.precioVenta)||0);});
+  var ingEntries=Object.entries(ingCats).sort(function(a,b){return b[1]-a[1];});
+  var maxIng=ingEntries.length?ingEntries[0][1]:1;
+  var ING_COLORS=['#3B1C6B','#F0802D','#C21D8F','#2a9d8f','#A95FB0','#457b9d','#9a8fa6'];
+
+  var costoMat=ventas.reduce(function(s,v){return s+(Number(v.CostoMat)||Number(v.costoMat)||Number(v.costo)||0);},0);
+  var margenMat=costoMat*0.5;
+  var egresosMerc=egresosSinRet.filter(function(e){return e.tipo==='Mercadería';}).reduce(function(s,e){return s+(Number(e.monto)||0);},0);
+  var restoEgr=egresosSinRet.filter(function(e){return e.tipo!=='Mercadería';}).reduce(function(s,e){return s+(Number(e.monto)||0);},0);
+  var r1=egresosMerc>0?costoMat/egresosMerc:null;
+  var r2=restoEgr>0?margenMat/restoEgr:null;
+
+  function bSem(r){if(r===null)return 'amarillo';if(r>=0.9&&r<=1.15)return 'verde';if(r<0.7||r>1.4)return 'rojo';return 'amarillo';}
+  function bNota1(r){if(r===null)return 'Sin egresos de mercadería registrados.';if(r>=1)return 'Los costos cubren los egresos de mercadería ('+Math.round(r*100)+'%).';return 'Se gastó más en mercadería que lo cobrado como costo ('+Math.round(r*100)+'%).';}
+  function bNota2(r){if(r===null)return 'Sin egresos operativos registrados.';if(r>=1)return 'El margen cubre los gastos operativos ('+Math.round(r*100)+'% de cobertura).';return 'El margen no alcanza los gastos operativos. Déficit: '+balFmt(restoEgr-margenMat)+'.';}
+
+  var top5v=ventas.slice().sort(function(a,b){return (Number(b.total)||Number(b.monto)||0)-(Number(a.total)||Number(a.monto)||0);}).slice(0,5);
+  var top5e=egresosSinRet.slice().sort(function(a,b){return (Number(b.monto)||0)-(Number(a.monto)||0);}).slice(0,5);
+  var saldoClass=saldo>=0?'bal-c-green':'bal-c-red';
+  var mx1=Math.max(costoMat,egresosMerc)||1,mx2=Math.max(margenMat,restoEgr)||1;
+
+  function balBarRows(entries,max,total,colors){
+    return entries.map(function(e,i){
+      var pct=Math.round(e[1]/max*100),pctT=total>0?Math.round(e[1]/total*100):0;
+      var col=colors[e[0]]||ING_COLORS[i%ING_COLORS.length];
+      return '<div class="bal-bar-row">'+
+        '<div class="bal-bar-meta"><span class="bal-bar-cat">'+escHtml(e[0])+'</span>'+
+        '<span class="bal-bar-val">'+balFmt(e[1])+'<span class="bal-bar-pct">'+pctT+'%</span></span></div>'+
+        '<div class="bal-bar-track"><div class="bal-bar-fill" style="width:0%;background:'+col+';" data-w="'+pct+'"></div></div>'+
+        '</div>';
+    }).join('');
+  }
+
+  var html='<div class="bal-period-label">'+escHtml(range.label)+'</div>'+
+    '<div class="bal-cards-grid">'+
+      '<div class="bal-kcard full"><div class="bal-kcard-lbl">Ingresos</div><div class="bal-kcard-val bal-c-green">'+balFmt(ingresos)+'</div><div class="bal-kcard-sub">'+numVentas+' '+(numVentas===1?'venta':'ventas')+'</div>'+(pendienteCobro>0?(function(){
+    var conSaldo=ventas.filter(function(v){return (Number(v.saldo)||0)>0;});
+    var rows=conSaldo.map(function(v){
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(240,128,45,.12);">'
+        +'<span style="font-size:11px;color:var(--ink);font-weight:500;">'+escHtml(v.cliente||'Sin nombre')+(v.descripcion?'<span style="color:var(--muted);font-weight:400;"> · '+escHtml(v.descripcion)+'</span>':'')+'</span>'
+        +'<span style="font-size:12px;font-weight:700;color:#e08c00;white-space:nowrap;margin-left:8px;">'+balFmt(Number(v.saldo))+'</span>'
+        +'</div>';
+    }).join('');
+    return '<div style="margin-top:8px;padding:8px;background:rgba(240,128,45,.07);border-radius:8px;border:1px solid rgba(240,128,45,.2);">'
+      +'<div style="font-size:11px;font-weight:700;color:#e08c00;margin-bottom:5px;">⏳ '+balFmt(pendienteCobro)+' pendiente de cobro</div>'
+      +rows
+      +'</div>';
+  })():'')+'</div>'+
+      '<div class="bal-kcard full"><div class="bal-kcard-lbl">Egresos <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;">(sin retiros)</span></div><div class="bal-kcard-val bal-c-magenta">'+balFmt(totalEgr)+'</div><div class="bal-kcard-sub">'+escHtml(egEntries.map(function(e){return e[0];}).join(' · ')||'—')+'</div></div>'+
+      '<div class="bal-kcard"><div class="bal-kcard-lbl">Saldo</div><div class="bal-kcard-val '+saldoClass+'">'+balFmt(saldo)+'</div><div class="bal-kcard-sub">ingresos − egresos</div></div>'+
+      '<div class="bal-kcard"><div class="bal-kcard-lbl">Retiros</div><div class="bal-kcard-val bal-c-orange">'+balFmt(totalRet)+'</div><div class="bal-kcard-sub">'+retiros.length+' movimiento'+(retiros.length!==1?'s':'')+'</div></div>'+
+    '</div>';
+
+  html+='<div class="sec-title"><i class="ti ti-scale"></i> Análisis de precios</div>';
+  if(costoMat>0||egresosMerc>0){
+    html+=
+      '<div class="bal-precio-card">'+
+        '<div class="bal-precio-head"><div class="bal-precio-title">Costo de materiales vs. Egresos mercadería</div><div class="bal-sem '+bSem(r1)+'"></div></div>'+
+        '<div class="bal-precio-vals"><div><div class="bal-precio-item-lbl">Costo en ventas</div><div class="bal-precio-item-val bal-c-purple">'+balFmt(costoMat)+'</div></div><div><div class="bal-precio-item-lbl">Egreso mercadería</div><div class="bal-precio-item-val bal-c-magenta">'+balFmt(egresosMerc)+'</div></div></div>'+
+        '<div class="bal-precio-track"><div class="bal-precio-bar" style="left:0;width:'+Math.round(costoMat/mx1*100)+'%;background:var(--purple);"></div><div class="bal-precio-bar" style="right:0;width:'+Math.round(egresosMerc/mx1*100)+'%;background:var(--magenta);opacity:.35;"></div></div>'+
+        '<div class="bal-precio-note">'+bNota1(r1)+'</div>'+
+      '</div>'+
+      '<div class="bal-precio-card">'+
+        '<div class="bal-precio-head"><div class="bal-precio-title">Margen materiales vs. Gastos operativos</div><div class="bal-sem '+bSem(r2)+'"></div></div>'+
+        '<div class="bal-precio-vals"><div><div class="bal-precio-item-lbl">Margen (50% costo)</div><div class="bal-precio-item-val bal-c-green">'+balFmt(margenMat)+'</div></div><div><div class="bal-precio-item-lbl">Servicios + otros</div><div class="bal-precio-item-val bal-c-orange">'+balFmt(restoEgr)+'</div></div></div>'+
+        '<div class="bal-precio-track"><div class="bal-precio-bar" style="left:0;width:'+Math.round(margenMat/mx2*100)+'%;background:#2a9d8f;"></div><div class="bal-precio-bar" style="right:0;width:'+Math.round(restoEgr/mx2*100)+'%;background:var(--orange-d);opacity:.35;"></div></div>'+
+        '<div class="bal-precio-note">'+bNota2(r2)+'</div>'+
+      '</div>';
+  } else {
+    html+='<div class="bal-loading" style="padding:1rem;">Sin datos de costos para este período.</div>';
+  }
+
+  html+='<div class="sec-title"><i class="ti ti-chart-bar"></i> Egresos por categoría</div>'+
+    '<div class="card" style="padding:1rem 1.1rem;">'+(egEntries.length?balBarRows(egEntries,maxEg,totalEgr,EGR_COLORS):'<div class="bal-loading" style="padding:.5rem;">Sin egresos.</div>')+'</div>';
+
+  var hasRealIngCats=ingEntries.length>0&&!(ingEntries.length===1&&ingEntries[0][0]==='Sin categoría');
+  html+='<div class="sec-title"><i class="ti ti-chart-donut"></i> Ingresos por tipo de trabajo</div>'+
+    '<div class="card" style="padding:1rem 1.1rem;">'+(hasRealIngCats?balBarRows(ingEntries,maxIng,ingresos,{}):'<div style="font-size:12px;color:var(--muted);">Sin datos de tipo de trabajo registrados.</div>')+'</div>';
+
+  html+='<div class="sec-title"><i class="ti ti-trophy"></i> Top 5 ventas</div><div class="card" style="padding:.6rem 1rem;">';
+  if(top5v.length){top5v.forEach(function(v,i){var tot=Number(v.total)||Number(v.monto)||Number(v.precioVenta)||0;var d=balParseDate(v.fecha);var fs=d?d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}):'';var cat=v.tipo||v.Tipo||v.categoria||'';html+='<div class="bal-top-row"><div class="bal-top-rank">#'+(i+1)+'</div><div class="bal-top-info"><div class="bal-top-name">'+escHtml(v.cliente||v.nombre||'—')+'</div><div class="bal-top-sub">'+escHtml([fs,cat].filter(Boolean).join(' · '))+'</div></div><div class="bal-top-val bal-c-green">'+balFmt(tot)+'</div></div>';});}
+  else html+='<div style="font-size:12px;color:var(--muted);padding:.5rem 0;">Sin ventas.</div>';
+  html+='</div>';
+
+  html+='<div class="sec-title"><i class="ti ti-arrow-down-circle"></i> Top 5 egresos</div><div class="card" style="padding:.6rem 1rem;">';
+  if(top5e.length){top5e.forEach(function(e,i){var d=balParseDate(e.fecha);var fs=d?d.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}):'';html+='<div class="bal-top-row"><div class="bal-top-rank">#'+(i+1)+'</div><div class="bal-top-info"><div class="bal-top-name">'+escHtml(e.descripcion||'—')+'</div><div class="bal-top-sub">'+escHtml([e.tipo,e.proveedor,fs].filter(Boolean).join(' · '))+'</div></div><div class="bal-top-val bal-c-magenta">'+balFmt(Number(e.monto)||0)+'</div></div>';});}
+  else html+='<div style="font-size:12px;color:var(--muted);padding:.5rem 0;">Sin egresos.</div>';
+  html+='</div>';
+
+  document.getElementById('bal-content').innerHTML=html;
+  setTimeout(function(){document.querySelectorAll('#bal-content .bal-bar-fill').forEach(function(b){b.style.width=(b.dataset.w||'0')+'%';});},80);
+}
+
+/* ============ PRECIARIO ============ */
+var _prec=[];
+var _precEditId=null;
+var _precCostoCounter=0;
+
+function precInit(){
+  precLoad();
+}
+
+function precLoad(){
+  var list=document.getElementById('prec-list');
+  list.innerHTML='<div class="gest-loading"><i class="ti ti-loader"></i> Cargando...</div>';
+  var cacheKey='_gc_preciario';
+  var cached=sessionStorage.getItem(cacheKey);
+  if(cached){var obj=JSON.parse(cached);if(Date.now()-obj.ts<60000){_prec=obj.data||[];precRender(_prec);return;}}
+  asCall({action:'getPreciario'},function(res){
+    _prec=res.ok?(res.data||[]):[];
+    if(res.ok)sessionStorage.setItem(cacheKey,JSON.stringify({ts:Date.now(),data:_prec}));
+    precRender(_prec);
+  });
+}
+
+function precRefresh(){
+  sessionStorage.removeItem('_gc_preciario');
+  var ico=document.getElementById('prec-refresh-ico');
+  if(ico){ico.style.transition='transform .4s';ico.style.transform='rotate(360deg)';setTimeout(function(){ico.style.transition='';ico.style.transform='';},400);}
+  precLoad();
+}
+
+function precRender(data){
+  var list=document.getElementById('prec-list');
+  if(!data||!data.length){
+    list.innerHTML='<div class="gest-empty"><i class="ti ti-file-dollar"></i>Sin presupuestos guardados.<br><small>Tocá <strong>+ Nuevo</strong> para agregar el primero.</small></div>';
+    return;
+  }
+  var html='';
+  data.slice().reverse().forEach(function(p){
+    var costos=[];
+    try{costos=JSON.parse(p.costos||'[]');}catch(e){}
+    var totalCosto=costos.reduce(function(s,c){return s+(parseFloat(c.monto)||0);},0);
+    var precio=parseFloat(p.precioVenta)||0;
+    var ganancia=precio-totalCosto;
+    var margen=precio>0?Math.round((ganancia/precio)*100):0;
+    var margenColor=margen>=0?'#2a9d8f':'var(--magenta)';
+    html+=
+      '<div class="gest-card" onclick="precVerDetalle(\''+p.id+'\')" style="cursor:pointer;">'+
+        '<div class="gest-card-head">'+
+          '<div class="gest-card-name">'+escHtml(p.nombre||'Sin nombre')+'</div>'+
+          '<div class="gest-badge '+(margen>=0?'confirmado':'vencido')+'">'+margen+'% margen</div>'+
+        '</div>'+
+        '<div class="gest-card-meta">'+
+          (costos.length?costos.length+' ítem'+(costos.length!==1?'s':'')+' · Costo: $'+balFmt(totalCosto):'Sin costos cargados')+
+        '</div>'+
+        '<div class="gest-card-total">$'+balFmt(precio)+'</div>'+
+      '</div>';
+  });
+  list.innerHTML=html;
+}
+
+function precNuevo(){
+  _precEditId=null;
+  document.getElementById('prec-form-title').textContent='Nuevo presupuesto';
+  document.getElementById('prec-nombre').value='';
+  document.getElementById('prec-precio').value='';
+  document.getElementById('prec-costos-list').innerHTML='<div class="prec-empty-costos" id="prec-costos-empty">Sin ítems de costo todavía</div>';
+  precActualizarCalc();
+  document.getElementById('prec-form-overlay').classList.remove('hidden');
+}
+
+function precCerrarForm(){
+  document.getElementById('prec-form-overlay').classList.add('hidden');
+}
+
+function precAgregarCosto(nombre,monto){
+  var empty=document.getElementById('prec-costos-empty');
+  if(empty)empty.remove();
+  var id=++_precCostoCounter;
+  var row=document.createElement('div');
+  row.className='prec-costo-row';
+  row.id='prec-costo-'+id;
+  row.innerHTML=
+    '<input type="text" class="prec-costo-nombre" placeholder="Descripción del costo..." value="'+escHtml(nombre||'')+'" oninput="precActualizarCalc()">'+
+    '<div class="prec-costo-wrap">'+
+      '<span class="prec-costo-sign">$</span>'+
+      '<input type="number" class="prec-costo-monto" placeholder="0" value="'+(monto||'')+'" oninput="precActualizarCalc()">'+
+    '</div>'+
+    '<button class="remove-btn" onclick="precEliminarCosto('+id+')"><i class="ti ti-trash" style="font-size:15px;"></i></button>';
+  document.getElementById('prec-costos-list').appendChild(row);
+  precActualizarCalc();
+}
+
+function precEliminarCosto(id){
+  var row=document.getElementById('prec-costo-'+id);
+  if(row)row.remove();
+  var list=document.getElementById('prec-costos-list');
+  if(!list.querySelector('.prec-costo-row')){
+    list.innerHTML='<div class="prec-empty-costos" id="prec-costos-empty">Sin ítems de costo todavía</div>';
+  }
+  precActualizarCalc();
+}
+
+function precActualizarCalc(){
+  var precio=parseFloat(document.getElementById('prec-precio').value)||0;
+  var montos=document.querySelectorAll('#prec-costos-list .prec-costo-monto');
+  var totalCosto=0;
+  montos.forEach(function(m){totalCosto+=(parseFloat(m.value)||0);});
+  var ganancia=precio-totalCosto;
+  var margen=precio>0?Math.round((ganancia/precio)*100):null;
+  document.getElementById('prec-calc-costo').textContent='$'+balFmt(totalCosto);
+  var gEl=document.getElementById('prec-calc-ganancia');
+  gEl.textContent=(ganancia<0?'−':'')+'$'+balFmt(Math.abs(ganancia));
+  gEl.style.color=ganancia>=0?'#2a9d8f':'var(--magenta)';
+  document.getElementById('prec-calc-margen').textContent=margen!==null?margen+'%':'—';
+}
+
+function precLeerCostos(){
+  var rows=document.querySelectorAll('#prec-costos-list .prec-costo-row');
+  var costos=[];
+  rows.forEach(function(row){
+    var nombre=row.querySelector('.prec-costo-nombre').value.trim();
+    var monto=parseFloat(row.querySelector('.prec-costo-monto').value)||0;
+    if(nombre||monto) costos.push({nombre:nombre,monto:monto});
+  });
+  return costos;
+}
+
+function precGuardar(){
+  var nombre=document.getElementById('prec-nombre').value.trim();
+  var precio=parseFloat(document.getElementById('prec-precio').value)||0;
+  if(!nombre){alert('Ingresá un nombre para el presupuesto.');return;}
+  if(!precio){alert('Ingresá el precio de venta.');return;}
+  var costos=precLeerCostos();
+  var btn=document.getElementById('prec-guardar-btn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader"></i> Guardando...';
+  var vendedora=sessionStorage.getItem('antula_vendedora')||'Antula';
+  var params={
+    nombre:nombre,
+    precioVenta:precio,
+    costos:JSON.stringify(costos),
+    vendedora:vendedora
+  };
+  if(_precEditId!==null){
+    params.action='editarPreciario';
+    params.id=_precEditId;
+    asCall(params,function(res){
+      btn.disabled=false;
+      btn.innerHTML='<i class="ti ti-device-floppy"></i> Guardar';
+      if(res.ok){
+        sessionStorage.removeItem('_gc_preciario');
+        precCerrarForm();
+        precLoad();
+      } else {
+        alert('Error al guardar: '+(res.error||''));
+      }
+    });
+  } else {
+    params.action='registrarPreciario';
+    asCall(params,function(res){
+      btn.disabled=false;
+      btn.innerHTML='<i class="ti ti-device-floppy"></i> Guardar';
+      if(res.ok){
+        sessionStorage.removeItem('_gc_preciario');
+        precCerrarForm();
+        precLoad();
+      } else {
+        alert('Error al guardar: '+(res.error||''));
+      }
+    });
+  }
+}
+
+function precVerDetalle(id){
+  var item=_prec.find(function(p){return String(p.id)===String(id);});
+  if(!item)return;
+  var costos=[];
+  try{costos=JSON.parse(item.costos||'[]');}catch(e){}
+  var totalCosto=costos.reduce(function(s,c){return s+(parseFloat(c.monto)||0);},0);
+  var precio=parseFloat(item.precioVenta)||0;
+  var ganancia=precio-totalCosto;
+  var margen=precio>0?Math.round((ganancia/precio)*100):0;
+
+  var costosHtml='';
+  costos.forEach(function(c){
+    costosHtml+=
+      '<div class="prec-capture-row">'+
+        '<span class="prec-capture-label">'+escHtml(c.nombre||'')+'</span>'+
+        '<span class="prec-capture-val">$'+balFmt(parseFloat(c.monto)||0)+'</span>'+
+      '</div>';
+  });
+  if(!costosHtml) costosHtml='<div class="prec-capture-row"><span class="prec-capture-label" style="font-style:italic;">Sin costos cargados</span></div>';
+
+  document.getElementById('prec-capture-area').innerHTML=
+    '<div class="prec-capture">'+
+      '<div class="prec-capture-brand">Antula Estudio</div>'+
+      '<div class="prec-capture-sub">Presupuesto guardado · '+(item.fecha||'')+'</div>'+
+      '<div class="prec-capture-nombre">'+escHtml(item.nombre||'Sin nombre')+'</div>'+
+      '<hr class="prec-capture-divider">'+
+      '<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Desglose de costos</div>'+
+      costosHtml+
+      '<div class="prec-capture-row total">'+
+        '<span>Total costos</span>'+
+        '<span>$'+balFmt(totalCosto)+'</span>'+
+      '</div>'+
+      '<hr class="prec-capture-divider" style="margin-top:10px;">'+
+      '<div class="prec-capture-row precio">'+
+        '<span>Precio de venta</span>'+
+        '<span>$'+balFmt(precio)+'</span>'+
+      '</div>'+
+      '<div class="prec-capture-row gan">'+
+        '<span>Ganancia neta</span>'+
+        '<span>'+(ganancia<0?'−':'')+'$'+balFmt(Math.abs(ganancia))+' ('+margen+'%)</span>'+
+      '</div>'+
+    '</div>';
+
+  document.getElementById('prec-detail-overlay').classList.remove('hidden');
+  document.getElementById('prec-detail-overlay').dataset.currentId=id;
+}
+
+function precCerrarDetalle(){
+  document.getElementById('prec-detail-overlay').classList.add('hidden');
+}
+
+function precEditarActual(){
+  var id=document.getElementById('prec-detail-overlay').dataset.currentId;
+  var item=_prec.find(function(p){return String(p.id)===String(id);});
+  if(!item)return;
+  precCerrarDetalle();
+  _precEditId=id;
+  var costos=[];
+  try{costos=JSON.parse(item.costos||'[]');}catch(e){}
+  document.getElementById('prec-form-title').textContent='Editar presupuesto';
+  document.getElementById('prec-nombre').value=item.nombre||'';
+  document.getElementById('prec-precio').value=item.precioVenta||'';
+  document.getElementById('prec-costos-list').innerHTML='<div class="prec-empty-costos" id="prec-costos-empty">Sin ítems de costo todavía</div>';
+  costos.forEach(function(c){precAgregarCosto(c.nombre,c.monto);});
+  precActualizarCalc();
+  document.getElementById('prec-form-overlay').classList.remove('hidden');
+}
+
+function precEliminarActual(){
+  var id=document.getElementById('prec-detail-overlay').dataset.currentId;
+  if(!confirm('¿Eliminar este presupuesto guardado?'))return;
+  asCall({action:'eliminarPreciario',id:id},function(res){
+    if(res.ok){
+      sessionStorage.removeItem('_gc_preciario');
+      precCerrarDetalle();
+      precLoad();
+    } else {
+      alert('Error: '+(res.error||''));
+    }
+  });
 }
 
 var _egTipoSel=-1;
@@ -3129,9 +4200,9 @@ function egRenderHist(){
   var cacheKey='_gc_egresos';
   var cached=sessionStorage.getItem(cacheKey);
   if(cached){var obj=JSON.parse(cached);if(Date.now()-obj.ts<60000){egMostrarHist(obj.data||[]);return;}}
-  document.getElementById('eg-tbody').innerHTML='<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--muted);"><i class="ti ti-loader"></i> Cargando...</td></tr>';
+  document.getElementById('eg-tbody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--muted);"><i class="ti ti-loader"></i> Cargando...</td></tr>';
   asCall({action:'getEgresos'},function(res){
-    if(!res.ok){document.getElementById('eg-tbody').innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:12px;">Error al cargar</td></tr>';return;}
+    if(!res.ok){document.getElementById('eg-tbody').innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:12px;">Error al cargar</td></tr>';return;}
     sessionStorage.setItem(cacheKey,JSON.stringify({ts:Date.now(),data:res.data||[]}));
     egMostrarHist(res.data||[]);
   });
@@ -3160,6 +4231,11 @@ function egMostrarHist(data){
     function toTs(f){var p=String(f).split('/');return p.length>=3?new Date(p[2],p[1]-1,p[0]).getTime():0;}
     return toTs(b.fecha)-toTs(a.fecha);
   });
+  if(_egSearch) recientes=recientes.filter(function(e){
+    return (e.descripcion||'').toLowerCase().includes(_egSearch)||
+           (e.tipo||'').toLowerCase().includes(_egSearch)||
+           (e.proveedor||'').toLowerCase().includes(_egSearch);
+  });
 
   var total=recientes.reduce(function(s,e){return s+(parseFloat(e.monto)||0);},0);
   document.getElementById('eg-sum-total').textContent=fmt(total);
@@ -3182,6 +4258,7 @@ function egMostrarHist(data){
       +'<td style="color:var(--muted);">'+escHtml(fmtFecha(e.fecha))+'</td>'
       +'<td><span class="eg-pill '+pillCls+'">'+escHtml(tipoLabel)+'</span></td>'
       +'<td style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+escHtml(e.descripcion||'')+'</td>'
+      +'<td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);">'+escHtml(e.proveedor||'—')+'</td>'
       +'<td style="font-weight:700;color:var(--purple);">'+fmt(parseFloat(e.monto)||0)+'</td>'
       +'<td><div style="display:flex;gap:4px;">'
       +'<button class="gest-btn" style="padding:4px 8px;" onclick="egEditar()"><i class="ti ti-pencil"></i></button>'
@@ -3201,6 +4278,83 @@ document.addEventListener('click',function(e){
 });
 </script>
 
+<!-- PRECIARIO — PICKER (selector al agregar producto en Precalculados) -->
+<div class="prec-picker-overlay hidden" id="prec-picker-overlay" onclick="if(event.target===this)precClosePicker()">
+  <div class="prec-picker-sheet">
+    <div class="prec-picker-header">
+      <span class="prec-picker-title"><i class="ti ti-file-dollar"></i> Elegir del preciario</span>
+      <button class="remove-btn" onclick="precClosePicker()" style="font-size:18px;"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="prec-picker-list" id="prec-picker-list">
+      <div class="prec-picker-empty"><i class="ti ti-loader"></i> Cargando...</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRECIARIO — FORM OVERLAY -->
+<div class="pres-overlay hidden" id="prec-form-overlay" onclick="if(event.target===this)precCerrarForm()">
+  <div class="pres-modal">
+    <div class="pres-modal-actions">
+      <div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--purple);margin-bottom:14px;" id="prec-form-title">Nuevo presupuesto</div>
+
+      <input type="text" id="prec-nombre" class="desc-input" placeholder="Nombre del producto o servicio..." style="margin-bottom:10px;">
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;">Precio de venta</div>
+        <div style="position:relative;">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--muted);z-index:1;">$</span>
+          <input type="number" id="prec-precio" class="desc-input" style="padding-left:28px;" placeholder="0" oninput="precActualizarCalc()">
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);">Costos</div>
+          <button class="gest-btn" style="font-size:11px;padding:5px 11px;background:rgba(240,128,45,.08);color:var(--orange-d);border:1px solid rgba(240,128,45,.2);" onclick="precAgregarCosto()"><i class="ti ti-plus"></i> Agregar ítem</button>
+        </div>
+        <div id="prec-costos-list">
+          <div class="prec-empty-costos" id="prec-costos-empty">Sin ítems de costo todavía</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;padding:.85rem 1rem;background:var(--cream2);">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+          <span style="color:var(--muted);">Costo total</span>
+          <span id="prec-calc-costo" style="font-weight:600;color:var(--ink);">$0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+          <span style="color:var(--muted);">Ganancia</span>
+          <span id="prec-calc-ganancia" style="font-weight:700;">$0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;border-top:1px solid var(--line);padding-top:8px;margin-top:4px;">
+          <span style="color:var(--muted);">Margen</span>
+          <span id="prec-calc-margen" style="font-weight:700;color:var(--purple);">—</span>
+        </div>
+      </div>
+
+      <div class="pres-modal-btns" style="margin-top:14px;">
+        <button class="pres-action-btn secondary" onclick="precCerrarForm()"><i class="ti ti-x"></i> Cancelar</button>
+        <button class="pres-action-btn" id="prec-guardar-btn" onclick="precGuardar()" style="flex:1;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;"><i class="ti ti-device-floppy"></i> Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRECIARIO — DETALLE OVERLAY -->
+<div class="pres-overlay hidden" id="prec-detail-overlay" onclick="if(event.target===this)precCerrarDetalle()">
+  <div class="pres-modal">
+    <div id="prec-capture-area" style="padding:.25rem .25rem 1rem;">
+      <!-- Populated by JS -->
+    </div>
+    <div class="pres-modal-btns prec-no-print" style="padding:0 0 .5rem;">
+      <button class="pres-action-btn secondary" onclick="precCerrarDetalle()" style="padding:10px 14px;"><i class="ti ti-x"></i></button>
+      <button class="pres-action-btn secondary" onclick="precEditarActual()" style="padding:10px 14px;"><i class="ti ti-edit"></i> Editar</button>
+      <button class="pres-action-btn" onclick="precEliminarActual()" style="background:rgba(194,29,143,.08);color:var(--magenta);border:1px solid rgba(194,29,143,.2);padding:10px 14px;"><i class="ti ti-trash"></i></button>
+      <button class="pres-action-btn" onclick="presCompartir('prec-capture-area')" style="flex:1;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;"><i class="ti ti-brand-whatsapp"></i> Compartir</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL PRESUPUESTO -->
 <div class="pres-overlay hidden" id="pres-overlay" onclick="if(event.target===this)cerrarPresupuesto()">
   <div class="pres-modal">
@@ -3214,8 +4368,8 @@ document.addEventListener('click',function(e){
         <button class="pres-action-btn" id="pres-reg-btn" onclick="registrarPresupuesto()" style="background:linear-gradient(135deg,#457b9d,#1d3557);color:#fff;box-shadow:0 3px 12px rgba(69,123,157,.3);flex:1;">
           <i class="ti ti-database-plus"></i> Registrar
         </button>
-        <button class="pres-action-btn primary" onclick="window.print()">
-          <i class="ti ti-camera"></i> Capturar
+        <button class="pres-action-btn" onclick="presCompartir('pres-capture')" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;">
+          <i class="ti ti-brand-whatsapp"></i> Compartir
         </button>
       </div>
     </div>
